@@ -4,6 +4,10 @@
 
 package app;
 
+import view.InicioSesion;
+
+
+
 /**
  *
  * @author Alexis Chapal
@@ -11,6 +15,9 @@ package app;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        InicioSesion login = new InicioSesion();
+        
+        login.setVisible(true);
+        System.out.println("hola mundo");
     }
 }
