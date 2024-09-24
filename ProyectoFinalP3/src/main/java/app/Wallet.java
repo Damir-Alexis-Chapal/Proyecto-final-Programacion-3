@@ -4,20 +4,15 @@
 
 package app;
 
-import view.InicioSesion;
-
-
-
+import view.Login;
 /**
  *
  * @author Alexis Chapal
  */
-public class App {
+public class Wallet {
 
     public static void main(String[] args) {
-        InicioSesion login = new InicioSesion();
-        
-        login.setVisible(true);
-        System.out.println("hola mundo");
+        Login login = Login.obtenerInstancia();
+        login.setVisible(true);      
     }
 }
