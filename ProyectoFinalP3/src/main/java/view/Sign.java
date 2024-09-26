@@ -4,6 +4,17 @@
  */
 package view;
 
+import app.Wallet;
+import controller.SignController;
+import java.awt.Color;
+import java.util.LinkedList;
+import java.util.Random;
+import model.Banco;
+import model.Cuenta;
+import model.TipoCuenta;
+import model.Usuario;
+import static view.Login.botonIngresar;
+
 /**
  *
  * @author Alexis Chapal
@@ -13,8 +24,16 @@ public class Sign extends javax.swing.JFrame {
     /**
      * Creates new form Sign
      */
-    public Sign() {
+    //aplico el patrón singleton al constructor para obtener siempre la misma instancia
+    private static final Sign instancia = new Sign();
+
+    private Sign() {
         initComponents();
+        this.setLocationRelativeTo(null);
+    }
+
+    public static Sign obtenerInstancia() {
+        return instancia;
     }
 
     /**
@@ -27,26 +46,368 @@ public class Sign extends javax.swing.JFrame {
     private void initComponents() {
 
         background = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtSaldo = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
+        jSeparator5 = new javax.swing.JSeparator();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jLabel8 = new javax.swing.JLabel();
+        txtNumeroDeCuenta = new javax.swing.JTextField();
+        jSeparator7 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
+        jcBanco = new javax.swing.JComboBox<>();
+        jcTipoCuenta = new javax.swing.JComboBox<>();
+        botonFinalizar = new javax.swing.JPanel();
+        jbFinalizar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        background.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("NOMBRE");
+
+        txtNombre.setBorder(null);
+        txtNombre.setPreferredSize(new java.awt.Dimension(1, 25));
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+
+        txtCorreo.setBorder(null);
+        txtCorreo.setPreferredSize(new java.awt.Dimension(1, 25));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("CORREO ELECTRONICO");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("TELEFONO");
+
+        txtDireccion.setBorder(null);
+        txtDireccion.setPreferredSize(new java.awt.Dimension(1, 25));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setText("DIRECCIÓN");
+
+        txtSaldo.setEditable(false);
+        txtSaldo.setBackground(new java.awt.Color(255, 255, 255));
+        txtSaldo.setText("$0");
+        txtSaldo.setBorder(null);
+        txtSaldo.setPreferredSize(new java.awt.Dimension(1, 25));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setText("SALDO ");
+
+        txtTelefono.setBorder(null);
+        txtTelefono.setPreferredSize(new java.awt.Dimension(1, 25));
+
+        jSeparator1.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator2.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator3.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator3.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator4.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator4.setForeground(new java.awt.Color(255, 255, 255));
+
+        jSeparator5.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator5.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel6.setText("NUEVO USUARIO");
+
+        jPanel1.setBackground(new java.awt.Color(70, 130, 180));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CUENTA BANCARIA ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("BANCO");
+
+        jSeparator6.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator6.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("NÚMERO DE CUENTA");
+
+        txtNumeroDeCuenta.setBorder(null);
+        txtNumeroDeCuenta.setPreferredSize(new java.awt.Dimension(1, 25));
+        txtNumeroDeCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumeroDeCuentaActionPerformed(evt);
+            }
+        });
+
+        jSeparator7.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator7.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("TIPO DE CUENTA");
+
+        jSeparator8.setBackground(new java.awt.Color(70, 130, 180));
+        jSeparator8.setForeground(new java.awt.Color(255, 255, 255));
+
+        jcBanco.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "BANCO_NACIONAL", "BANCO_POPULAR", "BANCO_SANTANDER", "BBVA", "BANCO_ITAU" }));
+
+        jcTipoCuenta.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AHORRO", "CORRIENTE", "INVERSIÓN", " " }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jcTipoCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator6, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNumeroDeCuenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator8, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jcBanco, javax.swing.GroupLayout.Alignment.LEADING, 0, 146, Short.MAX_VALUE))
+                .addGap(47, 199, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jcBanco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(5, 5, 5)
+                .addComponent(txtNumeroDeCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addGap(8, 8, 8)
+                .addComponent(jcTipoCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        botonFinalizar.setBackground(new java.awt.Color(70, 130, 180));
+
+        jbFinalizar.setBackground(new java.awt.Color(70, 130, 180));
+        jbFinalizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jbFinalizar.setForeground(new java.awt.Color(255, 255, 255));
+        jbFinalizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jbFinalizar.setText("FINALIZAR\n");
+        jbFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbFinalizarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jbFinalizarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jbFinalizarMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout botonFinalizarLayout = new javax.swing.GroupLayout(botonFinalizar);
+        botonFinalizar.setLayout(botonFinalizarLayout);
+        botonFinalizarLayout.setHorizontalGroup(
+            botonFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jbFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+        );
+        botonFinalizarLayout.setVerticalGroup(
+            botonFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jbFinalizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 680, Short.MAX_VALUE)
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1)
+                    .addComponent(jSeparator2)
+                    .addComponent(jSeparator3)
+                    .addComponent(jSeparator4)
+                    .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                        .addComponent(botonFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(backgroundLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(backgroundLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel6)
+                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(backgroundLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(5, 5, 5)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)
+                                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(jLabel5))
+                            .addGroup(backgroundLayout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
         );
 
         getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 450));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtNumeroDeCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroDeCuentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumeroDeCuentaActionPerformed
+
+    private void jbFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseClicked
+
+        Wallet wallet = Wallet.obtenerInstancia();
+        LinkedList<Cuenta> cuentasBancarias = new LinkedList<>();
+        String nombre = txtNombre.getText();
+        String correo = txtCorreo.getText();
+        String telefono = txtTelefono.getText();
+        String direccion = txtDireccion.getText();
+        String banco = String.valueOf(jcBanco.getSelectedItem());
+        String numeroCuenta = txtNumeroDeCuenta.getText();
+        String tipoCuenta = String.valueOf(jcTipoCuenta.getSelectedItem());
+        int usuarioId = wallet.listaUsuarios.size() + 1;
+        SignController controlador = SignController.obtenerInstancia();
+
+        
+        TipoCuenta tipo = TipoCuenta.AHORRO;
+        
+        if (tipoCuenta.equals("AHORRO")) {
+            tipo = TipoCuenta.AHORRO;
+        } else if (tipoCuenta.equals("CORRIENTE")) {
+            tipo = TipoCuenta.CORRIENTE;
+        } else if (tipoCuenta.equals("INVERSION")) {
+            tipo = TipoCuenta.INVERSION;
+        }
+        
+        double saldo=0;
+        int min= 1000000;
+        int max= 10000000;
+        Random random = new Random();
+        // Generamos un número aleatorio entre min y max (incluidos)
+        saldo = random.nextDouble((max - min) + 1) + min;
+        
+        Banco bancoN = Banco.BANCO_ITAU;
+
+        int idCuenta = cuentasBancarias.size() + 1;
+
+        if (banco.equals("BANCO_NACIONAL")) {
+            bancoN = Banco.BANCO_NACIONAL;
+        } else if (banco.equals("BANCO_POPULAR")) {
+            bancoN = Banco.BANCO_POPULAR;
+        } else if (banco.equals("BANCO_SANTANDER")) {
+            bancoN = Banco.BANCO_SANTANDER;
+        } else if (banco.equals("BBVA")) {
+            bancoN = Banco.BBVA;
+        } else if (banco.equals("BANCO_ITAU")) {
+            bancoN = Banco.BANCO_ITAU;
+        }
+
+        Cuenta cuenta = new Cuenta(idCuenta, bancoN, numeroCuenta, tipo, saldo);
+
+        cuentasBancarias.add(cuenta);
+
+        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, correo, telefono, direccion, saldo, cuentasBancarias);
+
+        controlador.agregarUsuario(nuevoUsuario);
+        
+        this.dispose();
+    }//GEN-LAST:event_jbFinalizarMouseClicked
+
+    private void jbFinalizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseEntered
+        botonFinalizar.setBackground(new Color(78, 123, 160));
+    }//GEN-LAST:event_jbFinalizarMouseEntered
+
+    private void jbFinalizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseExited
+        botonFinalizar.setBackground(new Color(70, 145, 180));
+    }//GEN-LAST:event_jbFinalizarMouseExited
 
     /**
      * @param args the command line arguments
@@ -85,5 +446,33 @@ public class Sign extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
+    private javax.swing.JPanel botonFinalizar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JLabel jbFinalizar;
+    private javax.swing.JComboBox<String> jcBanco;
+    private javax.swing.JComboBox<String> jcTipoCuenta;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumeroDeCuenta;
+    private javax.swing.JTextField txtSaldo;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

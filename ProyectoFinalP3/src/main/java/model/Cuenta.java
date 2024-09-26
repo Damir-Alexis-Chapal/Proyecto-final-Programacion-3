@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.util.Random;
+
 /**
  *
  * @author Alexis Chapal
@@ -14,12 +16,14 @@ public class Cuenta {
     private Banco banco;
     private String numeroCuenta;
     private TipoCuenta tipoCuenta;
+    private double saldo;
 
-    public Cuenta(int idCuenta, Banco banco, String numeroCuenta, TipoCuenta tipoCuenta) {
+    public Cuenta(int idCuenta, Banco banco, String numeroCuenta, TipoCuenta tipoCuenta, double saldo) {
         this.idCuenta = idCuenta;
         this.banco = banco;
         this.numeroCuenta = numeroCuenta;
         this.tipoCuenta = tipoCuenta;
+        this.saldo = saldo;
 
     }
 
@@ -43,6 +47,22 @@ public class Cuenta {
     public int getIdCuenta() {
         return idCuenta;
     }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }  
 
     @Override
     public String toString() {

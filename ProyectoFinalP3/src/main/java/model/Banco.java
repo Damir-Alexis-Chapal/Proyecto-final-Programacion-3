@@ -12,12 +12,7 @@ public enum Banco {
     BANCO_NACIONAL,
     BANCO_POPULAR,
     BANCO_SANTANDER,
-    CITIBANK,
-    HSBC,
     BBVA,
-    BANCO_DE_AMERICA,
-    WELLS_FARGO,
-    SCOTIABANK,
     BANCO_ITAU;
 }
 

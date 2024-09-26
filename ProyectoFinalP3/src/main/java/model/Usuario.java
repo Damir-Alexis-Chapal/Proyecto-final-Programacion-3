@@ -22,7 +22,7 @@ public class Usuario {
     private double saldoTotal;
     
     // Lista de cuentas bancarias asociadas
-     private LinkedList<Cuenta> cuentasBancarias; 
+    private LinkedList<Cuenta> cuentasBancarias; 
 
     
     public Usuario(int idUsuario, String nombreCompleto, String correoElectronico,
@@ -103,14 +103,14 @@ public class Usuario {
 //        this.cuentasBancarias.remove(cuentaBancaria);
 //    }
 //
-//    // Método para mostrar información del usuario
-//    public String mostrarInformacionUsuario() {
-//        return "ID Usuario: " + idUsuario
-//                + "\nNombre Completo: " + nombreCompleto
-//                + "\nCorreo Electrónico: " + correoElectronico
-//                + "\nNúmero de Teléfono: " + numeroTelefono
-//                + "\nDirección: " + direccion
-//                + "\nSaldo Total: " + saldoTotal
-//                + "\nCuentas Bancarias: " + cuentasBancarias;
-//    }
+    // Método para mostrar información del usuario
+    public String mostrarInformacionUsuario() {
+        return "ID Usuario: " + idUsuario
+                + "\nNombre Completo: " + nombreCompleto
+                + "\nCorreo Electrónico: " + correoElectronico
+                + "\nNúmero de Teléfono: " + numeroTelefono
+                + "\nDirección: " + direccion
+                + "\nSaldo Total: " +String.format("%.2f", saldoTotal) 
+                + "\nCuentas Bancarias: " + cuentasBancarias;
+    }
 }
