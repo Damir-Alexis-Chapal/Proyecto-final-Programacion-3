@@ -26,14 +26,14 @@ public class Usuario {
 
     
     public Usuario(int idUsuario, String nombreCompleto, String correoElectronico,
-            String numeroTelefono, String direccion, double saldoTotal, LinkedList<Cuenta> cuentasBancarias) {
+            String numeroTelefono, String direccion, double saldoTotal){//, LinkedList<Cuenta> cuentasBancarias) {
         this.idUsuario = idUsuario;
         this.nombreCompleto = nombreCompleto;
         this.correoElectronico = correoElectronico;
         this.numeroTelefono = numeroTelefono;
         this.direccion = direccion;
         this.saldoTotal = saldoTotal;
-        this.cuentasBancarias = cuentasBancarias;
+        //this.cuentasBancarias = cuentasBancarias;
     }
 
     // Getters y Setters

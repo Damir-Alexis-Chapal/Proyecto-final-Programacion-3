@@ -64,4 +64,10 @@ public class Wallet {
         
     }
 
+    public LinkedList<Usuario> getUsuarios() {
+        
+        return listaUsuarios;
+    
+    }
+
 }

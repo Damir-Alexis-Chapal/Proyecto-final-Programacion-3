@@ -7,7 +7,10 @@ package controller;
 import view.Sign;
 import model.Cuenta;
 import app.Wallet;
+import java.io.IOException;
 import model.Usuario;
+import persistencia.ArchivoUtil;
+import persistencia.Persistencia;
 
 /**
  *
@@ -25,11 +28,14 @@ public class SignController {
         return instancia;
     }
 
-    public void agregarUsuario(Usuario usuario) {
+    public void agregarUsuario(Usuario usuario) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
         wallet.agregarUsuario(usuario);
         System.out.println(usuario.mostrarInformacionUsuario());
         System.out.println("Usuario agregado");
 
+        Persistencia persistencia = Persistencia.obtenerInstancia();
+        persistencia.guardarUsuario(usuario);
     }
+
 }
