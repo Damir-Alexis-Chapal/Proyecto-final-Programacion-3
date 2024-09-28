@@ -46,13 +46,13 @@ public class Presupuesto {
     public void setMontoGastado(double montoGastado) {
         this.montoGastado = montoGastado;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
         return "Presupuesto{"
-                + "idPresupuesto= '" + idPresupuesto '\''
-                + ", nombrePresupuesto=" + nombrePresupuesto '\''
-                + ", montoTotal=" + montoTotal '\''
+                + "idPresupuesto='" + idPresupuesto + '\''
+                + ", nombrePresupuesto='" + nombrePresupuesto + '\''
+                + ", montoTotal=" + montoTotal
                 + ", montoGastado=" + montoGastado + '}';
     }
     
