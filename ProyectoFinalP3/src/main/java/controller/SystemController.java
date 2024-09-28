@@ -4,20 +4,21 @@
  */
 package controller;
 
+import app.Wallet;
+import java.io.IOException;
 import model.Usuario;
-import view.System;
-
+import view.Sistema;
 
 /**
  *
  * @author Alexis Chapal
  */
 public class SystemController {
-    
-     private static final SystemController instancia = new SystemController();
+
+    private static final SystemController instancia = new SystemController();
 
     private SystemController() {
-      
+
     }
 
     public static SystemController obtenerInstancia() {
@@ -25,15 +26,21 @@ public class SystemController {
     }
 
     public void setearDatosUsuario(Usuario usuario) {
-        System sistema = view.System.obtenerInstancia();
+        Sistema sistema = view.Sistema.obtenerInstancia();
         sistema.txtNombre.setText(usuario.getNombreCompleto());
         sistema.txtCorreo.setText(usuario.getCorreoElectronico());
         sistema.txtTelefono.setText(usuario.getNumeroTelefono());
         sistema.txtDireccion.setText(usuario.getDireccion());
         sistema.jbNombreUsuario.setText(usuario.getCorreoElectronico());
-        sistema.jbSaldoDisponible.setText("$"+String.format("%.2f", usuario.getSaldoTotal()));
-        
-        
+        sistema.jbSaldoDisponible.setText("$" + String.format("%.2f", usuario.getSaldoTotal()));
+
     }
-    
+
+    public void editarUsuario(Usuario usuario) throws IOException {
+        Wallet wallet = Wallet.obtenerInstancia();
+        int idUsuario = usuario.getIdUsuario()-1;
+        wallet.editarUsuario(idUsuario, usuario);
+
+    }
+
 }

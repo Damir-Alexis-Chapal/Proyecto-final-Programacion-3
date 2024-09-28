@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import model.Usuario;
 
 /**
  *
@@ -42,5 +44,6 @@ public class ArchivoUtil {
         fr.close();
         return contenido;
     }
+   
 
 }

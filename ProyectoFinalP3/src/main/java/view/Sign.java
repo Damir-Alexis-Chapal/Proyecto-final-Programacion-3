@@ -16,7 +16,7 @@ import model.Banco;
 import model.Cuenta;
 import model.TipoCuenta;
 import model.Usuario;
-import static view.Login.botonIngresar;
+
 
 /**
  *
@@ -401,6 +401,7 @@ public class Sign extends javax.swing.JFrame {
 
         try {
             controlador.agregarUsuario(nuevoUsuario);
+            this.dispose();
         } catch (IOException ex) {
             Logger.getLogger(Sign.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -266,11 +266,11 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (control.validarUsuario(txtUsuario.getText(), txtCorreo.getText())) {
-            System sistema = System.obtenerInstancia();
+            Sistema sistema = Sistema.obtenerInstancia();
             
             Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
             controlDos.setearDatosUsuario(usuario);
-            JOptionPane.showMessageDialog(null, "INICIO DE SESEÓN CORRECTO");
+            JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
             sistema.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null,"DATOS INCORRECTOS");

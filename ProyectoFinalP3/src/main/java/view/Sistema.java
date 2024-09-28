@@ -4,26 +4,33 @@
  */
 package view;
 
+import app.Wallet;
+import controller.SystemController;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Usuario;
 
 /**
  *
  * @author Alexis Chapal
  */
-public class System extends javax.swing.JFrame {
+public class Sistema extends javax.swing.JFrame {
 
     /**
-     * Creates new form System
+     * Creates new form Sistema
      */
     //aplico el patrón singleton al constructor para obtener siempre la misma instancia
-    private static final System instancia = new System();
+    private static final Sistema instancia = new Sistema();
 
-    private System() {
+    private Sistema() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
 
-    public static System obtenerInstancia() {
+    public static Sistema obtenerInstancia() {
         return instancia;
     }
 
@@ -427,7 +434,7 @@ public class System extends javax.swing.JFrame {
         jbFinalizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbFinalizar.setForeground(new java.awt.Color(70, 130, 180));
         jbFinalizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jbFinalizar.setText("FINALIZAR\n");
+        jbFinalizar.setText("FINALIZAR ");
         jbFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jbFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -438,6 +445,9 @@ public class System extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 jbFinalizarMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbFinalizarMousePressed(evt);
             }
         });
 
@@ -575,6 +585,7 @@ public class System extends javax.swing.JFrame {
 
     private void jbFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseClicked
 
+
     }//GEN-LAST:event_jbFinalizarMouseClicked
 
     private void jbFinalizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseEntered
@@ -608,6 +619,60 @@ public class System extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtDireccionMousePressed
 
+    private void jbFinalizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMousePressed
+        SystemController control = SystemController.obtenerInstancia();
+        Wallet wallet = Wallet.obtenerInstancia();
+        Usuario usuario = wallet.obtenerUsuario(txtNombre.getText(), txtCorreo.getText());
+        System.out.println("Obteniendo datos..");
+        if (jbNombreNuevoDato.getText().trim().equals("NOMBRE")) {
+            System.out.println("Modificando datos...");
+            usuario.setNombreCompleto(txtNuevoDato.getText());
+            try {
+                control.editarUsuario(usuario);
+                System.out.println("Datos modificados...!");
+                JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (jbNombreNuevoDato.getText().trim().equals("CORREO ELECTRONICO")) {
+            System.out.println("Modificando datos...");
+            usuario.setCorreoElectronico(txtNuevoDato.getText());
+            try {
+                control.editarUsuario(usuario);
+                System.out.println("Datos modificados...!");
+                JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (jbNombreNuevoDato.getText().trim().equals("TELEFONO")) {
+            System.out.println("Modificando datos...");
+            usuario.setNumeroTelefono(txtNuevoDato.getText());
+            try {
+                control.editarUsuario(usuario);
+                System.out.println("Datos modificados...!");
+                JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (jbNombreNuevoDato.getText().trim().equals("DIRECCION")) {
+            System.out.println("Modificando datos...");
+            usuario.setDireccion(txtNuevoDato.getText());
+            try {
+                control.editarUsuario(usuario);
+                System.out.println("Datos modificados...!");
+                JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+
+    }//GEN-LAST:event_jbFinalizarMousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -625,20 +690,21 @@ public class System extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(System.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sistema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(System.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sistema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(System.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sistema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(System.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sistema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new System().setVisible(true);
+                new Sistema().setVisible(true);
             }
         });
     }
