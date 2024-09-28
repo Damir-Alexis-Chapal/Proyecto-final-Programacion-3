@@ -52,7 +52,7 @@ public class Presupuesto {
         return "Presupuesto{"
                 + "idPresupuesto='" + idPresupuesto + '\''
                 + ", nombrePresupuesto='" + nombrePresupuesto + '\''
-                + ", montoTotal=" + montoTotal
+                + ", montoTotal=" + montoTotal + '\''
                 + ", montoGastado=" + montoGastado + '}';
     }
     
