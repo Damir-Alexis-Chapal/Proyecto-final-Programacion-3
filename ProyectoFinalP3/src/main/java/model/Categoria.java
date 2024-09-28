@@ -17,6 +17,6 @@ public enum Categoria {
     ATENCION_SANITARIA,
     CUIDADO_PERSONAL,
     ENTRETENIMIENTO,
-    OTRO;
+    OTRO
     
 }
