@@ -8,6 +8,15 @@ package model;
  *
  * @author Alexis Chapal
  */
-public class Categoria {
+public enum Categoria {
+    
+    VIVIENDA,
+    SERVICIOS,
+    TRANSPORTE,
+    ALIMENTACION,
+    ATENCION_SANITARIA,
+    CUIDADO_PERSONAL,
+    ENTRETENIMIENTO,
+    OTRO;
     
 }

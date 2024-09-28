@@ -59,7 +59,7 @@ public class Persistencia {
         try {
             //aqui se debe cambiar la ruta del método (argumento) por la ruta en la que se haya almacenado el archivo properties en su pc
             //en mi caso es el del ejemplo
-            properties.load(new FileInputStream(new File("D:/Universidad/codigos 2024-2/Proyecto final-P3/Proyecto-final-Programacion-3/ProyectoFinalP3/config.properties")));
+            properties.load(new FileInputStream(new File("C:\\Users\\angel\\proyectoProgra3\\Proyecto-final-Programacion-3config.properties")));
             return properties.get("rutaUsuario").toString();
 
         } catch (FileNotFoundException e) {
