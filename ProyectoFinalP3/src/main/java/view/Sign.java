@@ -7,13 +7,16 @@ package view;
 import app.Wallet;
 import controller.SignController;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Banco;
 import model.Cuenta;
 import model.TipoCuenta;
 import model.Usuario;
-import static view.Login.botonIngresar;
+
 
 /**
  *
@@ -394,9 +397,14 @@ public class Sign extends javax.swing.JFrame {
 
         cuentasBancarias.add(cuenta);
 
-        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, correo, telefono, direccion, saldo, cuentasBancarias);
+        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, correo, telefono, direccion, saldo);
 
-        controlador.agregarUsuario(nuevoUsuario);
+        try {
+            controlador.agregarUsuario(nuevoUsuario);
+            this.dispose();
+        } catch (IOException ex) {
+            Logger.getLogger(Sign.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         this.dispose();
     }//GEN-LAST:event_jbFinalizarMouseClicked

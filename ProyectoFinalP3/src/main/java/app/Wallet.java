@@ -1,9 +1,11 @@
 package app;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import javax.swing.SwingConstants;
 import model.Cuenta;
 import model.Usuario;
+import persistencia.Persistencia;
 import view.*;
 
 /**
@@ -33,35 +35,51 @@ public class Wallet {
         login.setVisible(true);
     }
 
-    public void agregarUsuario(Usuario usuario) {
+    public void agregarUsuario(Usuario usuario) throws IOException {
 
         listaUsuarios.add(usuario);
+        Persistencia persistencia = Persistencia.obtenerInstancia();
+        persistencia.guardarUsuarios(listaUsuarios);
 
     }
 
     public boolean validarUsuario(String nombreUsuario, String correo) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
-            if(listaUsuarios.get(i).getNombreCompleto().equals(nombreUsuario) &&
-                    listaUsuarios.get(i).getCorreoElectronico().equals(correo)){
+            if (listaUsuarios.get(i).getNombreCompleto().equals(nombreUsuario)
+                    && listaUsuarios.get(i).getCorreoElectronico().equals(correo)) {
                 return true;
             }
-            
+
         }
         return false;
 
     }
 
     public Usuario obtenerUsuario(String nombreUsuario, String correo) {
-        
+
         for (int i = 0; i < listaUsuarios.size(); i++) {
-            if(listaUsuarios.get(i).getNombreCompleto().equals(nombreUsuario) &&
-                    listaUsuarios.get(i).getCorreoElectronico().equals(correo)){
+            if (listaUsuarios.get(i).getNombreCompleto().equals(nombreUsuario)
+                    && listaUsuarios.get(i).getCorreoElectronico().equals(correo)) {
                 return listaUsuarios.get(i);
             }
-            
-        }       
+
+        }
         return null;
-        
+
+    }
+
+    public LinkedList<Usuario> getUsuarios() {
+
+        return listaUsuarios;
+
+    }
+
+    public void editarUsuario(int idUsuario, Usuario usuario) throws IOException {
+
+        listaUsuarios.set(idUsuario, usuario);
+        Persistencia persistencia = Persistencia.obtenerInstancia();
+        persistencia.guardarUsuarios(listaUsuarios);
+
     }
 
 }

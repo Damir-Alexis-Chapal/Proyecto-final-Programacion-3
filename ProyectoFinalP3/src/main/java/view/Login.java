@@ -4,11 +4,16 @@
  */
 package view;
 
+import app.Wallet;
 import controller.LoginController;
 import controller.SystemController;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Usuario;
+import persistencia.Persistencia;
 
 /**
  *
@@ -253,16 +258,22 @@ public class Login extends javax.swing.JFrame {
     private void jbIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbIngresarMouseClicked
         LoginController control = LoginController.obtenerInstancia();
         SystemController controlDos = SystemController.obtenerInstancia();
-        
+        Persistencia persistencia = Persistencia.obtenerInstancia();
+        Wallet wallet = Wallet.obtenerInstancia();
+        try {
+            persistencia.cargarUsuarios(wallet);
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (control.validarUsuario(txtUsuario.getText(), txtCorreo.getText())) {
-            System sistema = System.obtenerInstancia();
+            Sistema sistema = Sistema.obtenerInstancia();
             
             Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
             controlDos.setearDatosUsuario(usuario);
-            
+            JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
             sistema.setVisible(true);
         }else{
-            JOptionPane.showMessageDialog(null,"Datos incorrectos");
+            JOptionPane.showMessageDialog(null,"DATOS INCORRECTOS");
         }
         
 
