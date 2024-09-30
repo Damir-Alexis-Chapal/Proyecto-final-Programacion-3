@@ -50,7 +50,7 @@ public class Persistencia {
         txtUsuario.append(usuario.getDireccion() + ",");
         txtUsuario.append(usuario.getSaldoTotal() + "\n");
 
-        ArchivoUtil.guardarArchivo(rutaUsuario, txtUsuario.toString(), true);
+        ArchivoUtil.guardarArchivo(rutaUsuario, txtUsuario.toString(), false);
 
     }
 
