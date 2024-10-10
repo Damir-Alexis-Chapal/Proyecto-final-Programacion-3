@@ -44,6 +44,4 @@ public class ArchivoUtil {
         fr.close();
         return contenido;
     }
-   
-
 }
