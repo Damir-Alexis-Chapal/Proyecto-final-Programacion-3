@@ -20,7 +20,7 @@ public class ArchivoProperties {
 
         // Establecer algunas propiedades (clave-valor)
         //en esta parte deben ingresar la ruta en la que se encuentra el archivo UserData en su pc, aquí funciona con la ruta de mi pc
-        propiedades.setProperty("rutaUsuario", "C:\\Users\\spy33\\OneDrive\\Documentos\\PROYECTO FINAL PROGRAMACION 3\\Proyecto-final-Programacion-3\\ProyectoFinalP3\\src\\main\\java\\persistencia\\archivos\\UserData.txt");
+        propiedades.setProperty("rutaUsuario", "C:\\td\\persistencia\\archivos\\UserData.txt");
         // Intentar escribir el archivo properties
         try (FileOutputStream salida = new FileOutputStream("config.properties")) {
             // Guardar las propiedades en el archivo con un comentario opcional
