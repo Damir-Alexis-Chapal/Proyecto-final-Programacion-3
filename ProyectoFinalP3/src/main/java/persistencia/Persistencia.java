@@ -59,7 +59,7 @@ public class Persistencia {
         try {
             //aqui se debe cambiar la ruta del método (argumento) por la ruta en la que se haya almacenado el archivo properties en su pc
             //en mi caso es el del ejemplo
-            properties.load(new FileInputStream(new File("C:\\Users\\angel\\proyectoFinal\\Proyecto-final-Programacion-3\\config.properties")));
+            properties.load(new FileInputStream(new File("C:\\Users\\angel\\proyectoFinal\\Proyecto-final-Programacion-3\\ProyectoFinalP3\\config.properties")));
             return properties.get("rutaUsuario").toString();
 
         } catch (FileNotFoundException e) {
@@ -112,9 +112,9 @@ public class Persistencia {
         StringBuilder txtTransaccion = new StringBuilder();
         txtTransaccion.append(transaccion.getIdTransaccion() + "@@");
         txtTransaccion.append(transaccion.getFecha().getHour() + "@@");
-        txtTransaccion.append(transaccion.getFecha().getDayOfYear()+"/"+transaccion.getFecha().getMonth() + "/"+transaccion.getFecha().getYear()+ "@@");
+        txtTransaccion.append(transaccion.getFecha()+ "@@");
         txtTransaccion.append(transaccion.getMonto()+ "@@");
-        txtTransaccion.append(usuario.buscarCuenta(usuario.getCuentasBancarias(), transaccion.getCuentaEntrada())+ "@@");
+        txtTransaccion.append(usuario.buscarCuenta(usuario.getCuentasBancarias(), transaccion.getCuentaSalida())+ "@@");
         txtTransaccion.append(usuario.getIdUsuario()+ "@@");
         txtTransaccion.append(transaccion.getTipoTransaccion()+ "\n");
         
@@ -129,7 +129,7 @@ public class Persistencia {
         try {
             //aqui se debe cambiar la ruta del método (argumento) por la ruta en la que se haya almacenado el archivo properties en su pc
             //en mi caso es el del ejemplo
-            properties.load(new FileInputStream(new File("C:\\Users\\angel\\proyectoFinal\\Proyecto-final-Programacion-3\\config.properties")));
+            properties.load(new FileInputStream(new File("C:\\Users\\angel\\proyectoFinal\\Proyecto-final-Programacion-3\\ProyectoFinalP3\\config.properties")));
             return properties.get("rutaTransferencia").toString();
 
         } catch (FileNotFoundException e) {

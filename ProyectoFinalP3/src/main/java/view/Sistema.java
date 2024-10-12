@@ -688,8 +688,6 @@ public class Sistema extends javax.swing.JFrame {
         serviciosController.mostrarVentana(wallet.obtenerUsuario(nombreUsuario, correoUsuario));
         
         
-        
-        
     }//GEN-LAST:event_jbServiciosMouseClicked
 
     /**

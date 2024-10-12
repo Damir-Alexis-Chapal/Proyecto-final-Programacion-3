@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.SwingConstants;
 import model.Cuenta;
+import model.Transaccion;
 import model.Usuario;
 import persistencia.Persistencia;
 import view.*;
@@ -20,8 +21,10 @@ public class Wallet {
 
     // Declaración de la lista de usuarios
     public LinkedList<Usuario> listaUsuarios;
+    public LinkedList<Transaccion> listaTransacciones;
     
 
+    
     // Constructor privado
     private Wallet() {
         // Inicializamos la lista en el constructor

@@ -4,6 +4,9 @@
  */
 package controller;
 
+import app.Wallet;
+import java.time.LocalDateTime;
+import model.TipoTransaccion;
 import model.Transaccion;
 import model.Usuario;
 import view.Envios;
@@ -24,20 +27,30 @@ public class EnviosController {
         return instancia;
     }
     
-    public void setearDatosTransaccion (Transaccion transaccion){ //CON ESTO SE SETEAN LOS PRIMEROS 4 DATOS DE LA PARTE DE ENVIO
+    public void setearDatosTransaccion (Usuario usuario){ //CON ESTO SE SETEAN LOS PRIMEROS 4 DATOS DE LA PARTE DE ENVIO
         
-        Envios envios = view.Envios.obtenerInstancia();
-        envios.txtTipoTransaccion.setText(String.valueOf(2));
-        envios.txtIdTransaccion.setText(String.valueOf(transaccion.getIdTransaccion()));
-        envios.txtFechaTransaccion.setText(String.valueOf(transaccion.getFecha().getDayOfYear()+"-"+transaccion.getFecha().getMonth() + "-"+transaccion.getFecha().getYear()));
-        envios.txtHoraTransaccion.setText(String.valueOf(transaccion.getFecha().getHour()));
+        Wallet wallet = Wallet.obtenerInstancia();
+        int idTransferencia = 0;
+        Envios envios = new Envios();
         
-    }
-    
-    public void setearDatosUsuario(Usuario usuario) {
-        Envios envios = view.Envios.obtenerInstancia();
-        envios.txtIdCliente.setText(String.valueOf(usuario.getIdUsuario()));
+        if(wallet.listaTransacciones == null){
+            
+            idTransferencia +=1;
+        }
+        else{
+            idTransferencia = wallet.listaTransacciones.size()+1;
+        }
         
+        
+        TipoTransaccion tipoTransaccion = TipoTransaccion.TRANSFERENCIA;
+        LocalDateTime fecha = LocalDateTime.now();
+        
+        envios.txtTipoTransaccion.setText(String.valueOf(tipoTransaccion));
+        envios.txtIdTransaccion.setText(String.valueOf(idTransferencia));
+        envios.txtFechaTransaccion.setText(String.valueOf(fecha));
+        
+        envios.setVisible(true);
+                
     }
     
 }

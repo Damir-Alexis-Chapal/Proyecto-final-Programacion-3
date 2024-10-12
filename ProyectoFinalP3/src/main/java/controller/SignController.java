@@ -26,6 +26,7 @@ public class SignController {
 
     private static final SignController instancia = new SignController();
     private static final Logger logger = Logger.getLogger(SignController.class.getName());
+   
 
     private SignController() {
     }
@@ -42,8 +43,7 @@ public class SignController {
         System.out.println(usuario.mostrarInformacionUsuario());
         System.out.println("Usuario agregado");
     }
-<<<<<<< HEAD
+    
+    
 }
-=======
-}
->>>>>>> 8b788e7a934aa9bacfa5fea8754cf5a4c951cf90
+

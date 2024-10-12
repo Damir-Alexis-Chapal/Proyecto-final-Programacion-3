@@ -28,20 +28,12 @@ public class Transaccion {
     private static double proximoId= 1;
     protected double identificadorTransaccion;
     
-    public static double generarIdTransaccion(){
-        if(listaIds.isEmpty()){
-            for (int i= 0; i< 100000; i++){ //CON ESTO ESTABLECEMOS EL LIMITE DE IDS A CREAR (1.000.000)
-                listaIds.add(proximoId++);
-            }
-        }return listaIds.remove(0); //CON ESTO SE AGREGA EL PRIMER ID DEL ARRAY
-    }
-    
     public Transaccion(){
         
     }
     
     public Transaccion (double idTransaccion, LocalDateTime fecha,double monto, String descripcion, Cuenta cuentaEntrada, Cuenta cuentaSalida, TipoTransaccion tipoTransaccion){
-        this.idTransaccion = generarIdTransaccion();//AQUI SE ASIGNO AL ID EL GENERADOR DE IDS
+        this.idTransaccion = idTransaccion;
         this.fecha = fecha;
         this.monto = monto;
         this.descripcion = descripcion; 

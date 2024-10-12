@@ -184,14 +184,13 @@ public class Servicios extends javax.swing.JFrame {
 
     private void jbEnviosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbEnviosMouseClicked
         
-       ServiciosController controlador = ServiciosController.obtenerInstancia();
-       controlador.setearDatos(usuario);
+      
         
-        
+        EnviosController controlador = EnviosController.obtenerInstancia();
+       //AQUI SE INVOCA LA FUNCIÓN DEL SETEO
         
        
-        
-        
+        controlador.setearDatosTransaccion(usuario);
                 
         
     }//GEN-LAST:event_jbEnviosMouseClicked
