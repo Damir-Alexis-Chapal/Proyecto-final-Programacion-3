@@ -22,7 +22,6 @@ public class SignController {
     private static final SignController instancia = new SignController();
 
     private SignController() {
-
     }
 
     public static SignController obtenerInstancia() {
@@ -35,7 +34,4 @@ public class SignController {
         System.out.println(usuario.mostrarInformacionUsuario());
         System.out.println("Usuario agregado");
     }
-
-    
-
 }

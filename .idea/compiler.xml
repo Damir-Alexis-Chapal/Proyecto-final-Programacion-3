@@ -9,8 +9,5 @@
         <module name="ProyectoFinalP3" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ProyectoFinalP3" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>

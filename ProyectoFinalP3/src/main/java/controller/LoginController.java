@@ -33,7 +33,6 @@ public class LoginController {
     public static boolean validarUsuario(String nombreUsuario, String correo) {
         Wallet wallet = Wallet.obtenerInstancia();
         return(wallet.validarUsuario(nombreUsuario, correo));
-
     }
 
     public Usuario obtenerUsuario(String nombreUsuario, String correo) {
@@ -41,5 +40,4 @@ public class LoginController {
         return(wallet.obtenerUsuario(nombreUsuario, correo));
         
     }
-
 }

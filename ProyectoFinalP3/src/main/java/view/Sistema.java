@@ -5,6 +5,7 @@
 package view;
 
 import app.Wallet;
+import controller.ServiciosController;
 import controller.SystemController;
 import java.awt.Color;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Usuario;
+import persistencia.Persistencia;
 
 /**
  *
@@ -24,6 +26,9 @@ public class Sistema extends javax.swing.JFrame {
      */
     //aplico el patrón singleton al constructor para obtener siempre la misma instancia
     private static final Sistema instancia = new Sistema();
+    
+    public static String nombreUsuario = "";
+    public static String correoUsuario = "";
 
     private Sistema() {
         initComponents();
@@ -45,7 +50,7 @@ public class Sistema extends javax.swing.JFrame {
 
         panelButtons = new javax.swing.JPanel();
         botonServicios = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jbServicios = new javax.swing.JLabel();
         botonInicio = new javax.swing.JPanel();
         jButtonHome = new javax.swing.JLabel();
         botonCuenta = new javax.swing.JPanel();
@@ -95,20 +100,25 @@ public class Sistema extends javax.swing.JFrame {
 
         botonServicios.setBackground(new java.awt.Color(0, 51, 102));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("SERVICIOS");
+        jbServicios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jbServicios.setForeground(new java.awt.Color(255, 255, 255));
+        jbServicios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jbServicios.setText("SERVICIOS");
+        jbServicios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jbServiciosMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout botonServiciosLayout = new javax.swing.GroupLayout(botonServicios);
         botonServicios.setLayout(botonServiciosLayout);
         botonServiciosLayout.setHorizontalGroup(
             botonServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jbServicios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         botonServiciosLayout.setVerticalGroup(
             botonServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+            .addComponent(jbServicios, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
         );
 
         botonInicio.setBackground(new java.awt.Color(0, 51, 102));
@@ -610,13 +620,11 @@ public class Sistema extends javax.swing.JFrame {
     private void txtTelefonoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTelefonoMousePressed
         jbNombreNuevoDato.setText("TELEFONO");
         txtNuevoDato.setText(txtTelefono.getText());
-
     }//GEN-LAST:event_txtTelefonoMousePressed
 
     private void txtDireccionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDireccionMousePressed
         jbNombreNuevoDato.setText("DIRECCIÓN");
         txtNuevoDato.setText(txtDireccion.getText());
-
     }//GEN-LAST:event_txtDireccionMousePressed
 
     private void jbFinalizarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMousePressed
@@ -673,6 +681,17 @@ public class Sistema extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jbFinalizarMousePressed
 
+    private void jbServiciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbServiciosMouseClicked
+        
+        ServiciosController serviciosController = ServiciosController.obtenerInstancia();
+        Wallet wallet = Wallet.obtenerInstancia();
+        serviciosController.mostrarVentana(wallet.obtenerUsuario(nombreUsuario, correoUsuario));
+        
+        
+        
+        
+    }//GEN-LAST:event_jbServiciosMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -720,7 +739,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -741,6 +759,7 @@ public class Sistema extends javax.swing.JFrame {
     public static javax.swing.JLabel jbNombreNuevoDato;
     public static javax.swing.JLabel jbNombreUsuario;
     public static javax.swing.JLabel jbSaldoDisponible;
+    private javax.swing.JLabel jbServicios;
     private javax.swing.JPanel panelBanner;
     public static javax.swing.JPanel panelButtons;
     private javax.swing.JPanel panelHistory;

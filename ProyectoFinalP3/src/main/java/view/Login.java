@@ -275,7 +275,6 @@ public class Login extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null,"DATOS INCORRECTOS");
         }
-        
 
     }//GEN-LAST:event_jbIngresarMouseClicked
 

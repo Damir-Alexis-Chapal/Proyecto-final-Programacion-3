@@ -1,6 +1,7 @@
 package app;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.swing.SwingConstants;
 import model.Cuenta;
@@ -19,6 +20,7 @@ public class Wallet {
 
     // Declaración de la lista de usuarios
     public LinkedList<Usuario> listaUsuarios;
+    
 
     // Constructor privado
     private Wallet() {
@@ -40,7 +42,6 @@ public class Wallet {
         listaUsuarios.add(usuario);
         Persistencia persistencia = Persistencia.obtenerInstancia();
         persistencia.guardarUsuarios(listaUsuarios);
-
     }
 
     public boolean validarUsuario(String nombreUsuario, String correo) {
@@ -49,10 +50,8 @@ public class Wallet {
                     && listaUsuarios.get(i).getCorreoElectronico().equals(correo)) {
                 return true;
             }
-
         }
         return false;
-
     }
 
     public Usuario obtenerUsuario(String nombreUsuario, String correo) {
@@ -62,16 +61,12 @@ public class Wallet {
                     && listaUsuarios.get(i).getCorreoElectronico().equals(correo)) {
                 return listaUsuarios.get(i);
             }
-
         }
         return null;
-
     }
 
     public LinkedList<Usuario> getUsuarios() {
-
         return listaUsuarios;
-
     }
 
     public void editarUsuario(int idUsuario, Usuario usuario) throws IOException {
@@ -79,7 +74,6 @@ public class Wallet {
         listaUsuarios.set(idUsuario, usuario);
         Persistencia persistencia = Persistencia.obtenerInstancia();
         persistencia.guardarUsuarios(listaUsuarios);
-
     }
-
+    
 }

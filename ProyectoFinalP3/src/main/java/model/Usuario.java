@@ -21,8 +21,13 @@ public class Usuario {
     private String direccion;
     private double saldoTotal;
     
+    
     // Lista de cuentas bancarias asociadas
     private LinkedList<Cuenta> cuentasBancarias; 
+    
+    public Usuario(){
+        
+    }
 
     
     public Usuario(int idUsuario, String nombreCompleto, String correoElectronico,
@@ -33,7 +38,7 @@ public class Usuario {
         this.numeroTelefono = numeroTelefono;
         this.direccion = direccion;
         this.saldoTotal = saldoTotal;
-        //this.cuentasBancarias = cuentasBancarias;
+        this.cuentasBancarias = cuentasBancarias;
     }
 
     // Getters y Setters
@@ -85,12 +90,21 @@ public class Usuario {
         this.saldoTotal = saldoTotal;
     }
 
-    public List<Cuenta> getCuentasBancarias() {
+    public LinkedList <Cuenta> getCuentasBancarias() {
         return cuentasBancarias;
     }
 
     public void setCuentasBancarias(LinkedList<Cuenta> cuentasBancarias) {
         this.cuentasBancarias = cuentasBancarias;
+    }
+    
+    public Cuenta buscarCuenta (LinkedList<Cuenta> cuentasBancarias, Cuenta cuenta){
+        
+        for (int i=0; i<cuentasBancarias.size(); i++){
+            if ((cuentasBancarias.get(i).getNumeroCuenta().equals(cuenta.getNumeroCuenta()))){
+                return cuentasBancarias.get(i);
+            }
+        }return null;
     }
 
     // Método para agregar una cuenta bancaria

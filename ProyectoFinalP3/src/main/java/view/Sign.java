@@ -225,7 +225,7 @@ public class Sign extends javax.swing.JFrame {
         jbFinalizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jbFinalizar.setForeground(new java.awt.Color(255, 255, 255));
         jbFinalizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jbFinalizar.setText("FINALIZAR\n");
+        jbFinalizar.setText("FINALIZAR ");
         jbFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jbFinalizarMouseClicked(evt);

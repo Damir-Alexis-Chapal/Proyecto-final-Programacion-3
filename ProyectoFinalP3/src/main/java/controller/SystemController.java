@@ -18,7 +18,6 @@ public class SystemController {
     private static final SystemController instancia = new SystemController();
 
     private SystemController() {
-
     }
 
     public static SystemController obtenerInstancia() {
@@ -33,6 +32,8 @@ public class SystemController {
         sistema.txtDireccion.setText(usuario.getDireccion());
         sistema.jbNombreUsuario.setText(usuario.getCorreoElectronico());
         sistema.jbSaldoDisponible.setText("$" + String.format("%.2f", usuario.getSaldoTotal()));
+        sistema.nombreUsuario = (usuario.getNombreCompleto());
+        sistema.correoUsuario = (usuario.getCorreoElectronico());
 
     }
 

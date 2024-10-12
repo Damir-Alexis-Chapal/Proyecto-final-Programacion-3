@@ -18,5 +18,4 @@ public enum Categoria {
     CUIDADO_PERSONAL,
     ENTRETENIMIENTO,
     OTRO
-    
 }
