@@ -12,6 +12,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import model.Usuario;
 
 /**
@@ -44,4 +49,50 @@ public class ArchivoUtil {
         fr.close();
         return contenido;
     }
+
+    public static void guardarRegistroLog(String mensajeLog, int nivel, String accion, String rutaArchivo)
+    {
+        Logger LOGGER = Logger.getLogger(accion);
+        FileHandler fileHandler =  null;
+
+        try {
+            fileHandler = new FileHandler(rutaArchivo,true);
+            fileHandler.setFormatter(new SimpleFormatter());
+            LOGGER.addHandler(fileHandler);
+
+            switch (nivel) {
+                case 1:
+                    LOGGER.log(Level.INFO,accion+","+mensajeLog) ;
+                    break;
+
+                case 2:
+                    LOGGER.log(Level.WARNING,accion+","+mensajeLog) ;
+                    break;
+
+                case 3:
+                    LOGGER.log(Level.SEVERE,accion+","+mensajeLog) ;
+                    break;
+
+                default:
+                    break;
+            }
+
+        } catch (SecurityException e) {
+
+            LOGGER.log(Level.SEVERE,e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            LOGGER.log(Level.SEVERE,e.getMessage());
+            e.printStackTrace();
+        }
+        finally {
+
+            fileHandler.close();
+        }
+
+    }
+
+
+
 }

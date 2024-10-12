@@ -9,6 +9,11 @@ import model.Cuenta;
 import app.Wallet;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import model.Usuario;
 import persistencia.ArchivoUtil;
 import persistencia.Persistencia;
@@ -20,10 +25,12 @@ import persistencia.Persistencia;
 public class SignController {
 
     private static final SignController instancia = new SignController();
+    private static final Logger logger = Logger.getLogger(SignController.class.getName());
 
     private SignController() {
 
     }
+
 
     public static SignController obtenerInstancia() {
         return instancia;
@@ -32,10 +39,8 @@ public class SignController {
     public void agregarUsuario(Usuario usuario) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
         wallet.agregarUsuario(usuario);
+        logger.info("AVISO NUEVO USUARIO AGREGADO: " + usuario.mostrarInformacionUsuario());
         System.out.println(usuario.mostrarInformacionUsuario());
         System.out.println("Usuario agregado");
     }
-
-    
-
 }
