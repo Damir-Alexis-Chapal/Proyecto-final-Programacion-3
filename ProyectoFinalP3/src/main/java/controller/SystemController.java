@@ -7,6 +7,7 @@ package controller;
 import app.Wallet;
 import java.io.IOException;
 import model.Usuario;
+import persistencia.ArchivoUtil;
 import view.Sistema;
 
 /**
@@ -41,6 +42,7 @@ public class SystemController {
         Wallet wallet = Wallet.obtenerInstancia();
         int idUsuario = usuario.getIdUsuario()-1;
         wallet.editarUsuario(idUsuario, usuario);
+        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario: "+usuario.getNombreCompleto(), 1, "editar nombre usuario", "C:\\td\\persistencia\\log\\registroApp.log");
 
     }
 

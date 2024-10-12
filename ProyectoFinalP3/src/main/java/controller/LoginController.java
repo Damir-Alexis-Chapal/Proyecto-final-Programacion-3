@@ -4,10 +4,14 @@
  */
 package controller;
 
+import persistencia.ArchivoUtil;
 import view.Login;
 import view.Sign;
 import app.Wallet;
 import model.Usuario;
+import  persistencia.ArchivoUtil;
+
+import java.io.IOException;
 
 /**
  *
@@ -32,6 +36,7 @@ public class LoginController {
 
     public static boolean validarUsuario(String nombreUsuario, String correo) {
         Wallet wallet = Wallet.obtenerInstancia();
+        ArchivoUtil.guardarRegistroLog("Usuario"+nombreUsuario+" entro al sistema", 1, "Login", "C:\\td\\persistencia\\log\\registroApp.log");
         return(wallet.validarUsuario(nombreUsuario, correo));
     }
 

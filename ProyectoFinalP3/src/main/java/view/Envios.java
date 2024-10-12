@@ -290,10 +290,6 @@ public class Envios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdTransaccionActionPerformed
 
-    private void txtIdClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdClienteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdClienteActionPerformed
-
     private void jbFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseClicked
         
         
@@ -309,6 +305,10 @@ public class Envios extends javax.swing.JFrame {
        
         
     }//GEN-LAST:event_jbFinalizarMouseClicked
+
+    private void txtIdClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -361,7 +361,7 @@ public class Envios extends javax.swing.JFrame {
     private javax.swing.JPanel panelFondo;
     public javax.swing.JTextField txtFechaTransaccion;
     public javax.swing.JTextField txtHoraTransaccion;
-    public javax.swing.JTextField txtIdCliente;
+    private javax.swing.JTextField txtIdCliente;
     public javax.swing.JTextField txtIdTransaccion;
     private javax.swing.JTextField txtMontoTransaccion;
     private javax.swing.JTextField txtNumCuentaDestinataria;

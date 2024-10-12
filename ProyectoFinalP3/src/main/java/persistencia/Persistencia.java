@@ -102,7 +102,7 @@ public class Persistencia {
         }
         ArchivoUtil.guardarArchivo(rutaUsuario, txtUsuario.toString(), false);
 
-//        ArchivoUtil.guardarRegistroLog("Empleados guardados", 1, "btnAgregarEmpleado", "C://td/log.txt");
+        ArchivoUtil.guardarRegistroLog("Usuario guardado", 1, "guardarUsuario", "C:\\td\\persistencia\\log\\registroApp.log");
     }
     
     public void guardarTransaccion(Transaccion transaccion, Usuario usuario) throws IOException{
