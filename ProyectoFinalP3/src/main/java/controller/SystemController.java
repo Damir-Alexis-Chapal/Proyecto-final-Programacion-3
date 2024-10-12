@@ -41,7 +41,7 @@ public class SystemController {
         Wallet wallet = Wallet.obtenerInstancia();
         int idUsuario = usuario.getIdUsuario()-1;
         wallet.editarUsuario(idUsuario, usuario);
-        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario", 1, "editar nombre usuario", "C:\\td\\persistencia\\log\\registroApp.log");
+        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario: "+usuario.getNombreCompleto(), 1, "editar nombre usuario", "C:\\td\\persistencia\\log\\registroApp.log");
 
     }
 
