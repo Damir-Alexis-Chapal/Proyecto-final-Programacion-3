@@ -14,14 +14,13 @@ import java.util.ArrayList;
  */
 public class Transaccion {
     
+    TipoTransaccion tipoTransaccion;
     double idTransaccion;
     LocalDateTime fecha;
     double monto;
-    String descripcion;
-    TipoTransaccion tipoTransaccion;
-    Cuenta cuentaEntrada;
     Cuenta cuentaSalida;
-    
+    Cuenta cuentaEntrada;
+    String descripcion;
     
     //METODO PARA LISTAR LAS IDS DE LAS TRANSACCIONES
     public static ArrayList<Double> listaIds = new ArrayList<>();
@@ -31,24 +30,6 @@ public class Transaccion {
     public Transaccion(){
         
     }
-    
-    public Transaccion (double idTransaccion, LocalDateTime fecha,double monto, String descripcion, Cuenta cuentaEntrada, Cuenta cuentaSalida, TipoTransaccion tipoTransaccion){
-        this.idTransaccion = idTransaccion;
-        this.fecha = fecha;
-        this.monto = monto;
-        this.descripcion = descripcion; 
-        this.cuentaEntrada = cuentaEntrada;
-        this.cuentaSalida = cuentaSalida;
-        this.tipoTransaccion = tipoTransaccion;
-    }
-
-    public double getIdTransaccion() {
-        return idTransaccion;
-    }
-
-    public void setIdTransaccion(int idTransaccion) {
-        this.idTransaccion = idTransaccion;
-    }
 
     public TipoTransaccion getTipoTransaccion() {
         return tipoTransaccion;
@@ -57,7 +38,15 @@ public class Transaccion {
     public void setTipoTransaccion(TipoTransaccion tipoTransaccion) {
         this.tipoTransaccion = tipoTransaccion;
     }
-    
+
+    public double getIdTransaccion() {
+        return idTransaccion;
+    }
+
+    public void setIdTransaccion(double idTransaccion) {
+        this.idTransaccion = idTransaccion;
+    }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
@@ -74,12 +63,12 @@ public class Transaccion {
         this.monto = monto;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public Cuenta getCuentaSalida() {
+        return cuentaSalida;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCuentaSalida(Cuenta cuentaSalida) {
+        this.cuentaSalida = cuentaSalida;
     }
 
     public Cuenta getCuentaEntrada() {
@@ -90,26 +79,52 @@ public class Transaccion {
         this.cuentaEntrada = cuentaEntrada;
     }
 
-    public Cuenta getCuentaSalida() {
-        return cuentaSalida;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setCuentaSalida(Cuenta cuentaSalida) {
-        this.cuentaSalida = cuentaSalida;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
-    
-    
+
+    public static ArrayList<Double> getListaIds() {
+        return listaIds;
+    }
+
+    public static void setListaIds(ArrayList<Double> listaIds) {
+        Transaccion.listaIds = listaIds;
+    }
+
+    public static double getProximoId() {
+        return proximoId;
+    }
+
+    public static void setProximoId(double proximoId) {
+        Transaccion.proximoId = proximoId;
+    }
+
+    public double getIdentificadorTransaccion() {
+        return identificadorTransaccion;
+    }
+
+    public void setIdentificadorTransaccion(double identificadorTransaccion) {
+        this.identificadorTransaccion = identificadorTransaccion;
+    }
 
     @Override
     public String toString() {
         return "Transaccion{" 
-                + "idTransaccion=" + idTransaccion + '\''
+                + "tipoTransaccion=" + tipoTransaccion + '\''
+                + ", idTransaccion=" + idTransaccion + '\''
                 + ", fecha=" + fecha + '\''
                 + ", monto=" + monto + '\''
-                + ", descripcion=" + descripcion + '\''
-                + ", tipoTransaccion=" + tipoTransaccion + '\''
+                + ", cuentaSalida=" + cuentaSalida  + '\''
                 + ", cuentaEntrada=" + cuentaEntrada + '\''
-                + ", cuentaSalida=" + cuentaSalida + '}';
+                + ", descripcion=" + descripcion + '\''
+                + ", identificadorTransaccion=" + identificadorTransaccion + '}';
     }
+    
+    
+    
 }
 

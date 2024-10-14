@@ -5,9 +5,14 @@
 package view;
 
 import app.Wallet;
+import controller.EnviosController;
+import controller.SignController;
 import controller.SystemController;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
+import model.Banco;
 import model.Cuenta;
+import model.TipoTransaccion;
 import model.Transaccion;
 import persistencia.Persistencia;
 
@@ -105,14 +110,8 @@ public class Envios extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel2))
-                .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,20 +120,26 @@ public class Envios extends javax.swing.JFrame {
                         .addComponent(jLabel8)
                         .addGap(80, 80, 80))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addGap(62, 62, 62))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel7)))
+                        .addGap(41, 41, 41))))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(jLabel9)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel9)
-                .addGap(40, 40, 40)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel2)
-                .addGap(40, 40, 40)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel3)
                 .addGap(108, 108, 108)
                 .addComponent(jLabel5)
@@ -300,21 +305,24 @@ public class Envios extends javax.swing.JFrame {
         
        SystemController control = SystemController.obtenerInstancia();
        Wallet wallet = Wallet.obtenerInstancia();
+       EnviosController controlEnvios = EnviosController.obtenerInstancia();
        LinkedList<Cuenta> cuentasBancarias = new LinkedList<>();
        
        
-       double montoEnviar = Double.parseDouble(txtMontoTransaccion.getText());
-       String numCuentaDestinataria = txtNumCuentaOrigen.getText();
+       TipoTransaccion tipoTransaccion = TipoTransaccion.valueOf(txtTipoTransaccion.getText());
+       double idTransaccion = Double.parseDouble(txtIdTransaccion.getText());
+       LocalDateTime fecha = LocalDateTime.parse(txtFechaTransaccion.getText());
+       double monto = Double.parseDouble(txtMontoTransaccion.getText());
+       Cuenta cuentaOrigen = null; //FALTA SETEAR ESTO
+       Cuenta cuentaDestino = null; //FALTA GUARDAR ESTO
+       String descripcion = txtDescripcion.getText();
        
        
-       Transaccion transaccion = new Transaccion();
+       //ERROR POR QUE NO SE ESTAN SETEANDO LOS DATOS TIPO CUENTA ORIGEN Y CUENTA DESTINO
+       Transaccion transaccion = new Transaccion(tipoTransaccion, idTransaccion, fecha, monto, cuentaOrigen, cuentaDestino, descripcion);
        
-       
-       Persistencia persistencia = Persistencia.obtenerInstancia();
-       
-       
-       
-       
+       ///////////// error al guardar falta crear la transaccion y el usuario
+       Persistencia.obtenerInstancia().guardarTransaccion(transaccion, usuario);
         
     }//GEN-LAST:event_jbFinalizarMouseClicked
 

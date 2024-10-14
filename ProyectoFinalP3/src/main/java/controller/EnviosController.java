@@ -45,6 +45,7 @@ public class EnviosController {
         TipoTransaccion tipoTransaccion = TipoTransaccion.TRANSFERENCIA;
         LocalDateTime fecha = LocalDateTime.now();
         
+        
         envios.txtTipoTransaccion.setText(String.valueOf(tipoTransaccion));
         envios.txtIdTransaccion.setText(String.valueOf(idTransferencia));
         envios.txtFechaTransaccion.setText(String.valueOf(fecha));

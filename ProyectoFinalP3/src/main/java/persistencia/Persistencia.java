@@ -107,7 +107,7 @@ public class Persistencia {
     
     public void guardarTransaccion(Transaccion transaccion, Usuario usuario) throws IOException{
         
-        rutaUsuario= obtenerRutaProperties();
+        rutaTransaccion= obtenerRutaProperties();
         
         StringBuilder txtTransaccion = new StringBuilder();
         txtTransaccion.append(transaccion.getIdTransaccion() + "@@");
