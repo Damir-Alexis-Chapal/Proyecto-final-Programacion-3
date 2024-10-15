@@ -126,14 +126,14 @@ public class Transaccion implements Serializable{
 
     @Override
     public String toString() {
-        return "Transaccion{"
-                + "tipoTransaccion=" + tipoTransaccion + '\''
-                + ", idTransaccion=" + idTransaccion + '\''
-                + ", fecha=" + fecha + '\''
-                + ", monto=" + monto + '\''
-                + ", cuentaSalida=" + cuentaOrigen + '\''
-                + ", cuentaEntrada=" + cuentaDestino + '\''
-                + ", descripcion=" + descripcion + '}';
+        return "Transaccion{\n"
+                + "* tipo Transaccion: " + tipoTransaccion + "\n"
+                + "* id Transaccion: " + idTransaccion + "\n"
+                + "* fecha: " + fecha + "\n"
+                + "* monto: " + monto + "\n"
+                + "* cuenta Origen: " + cuentaOrigen + "\n"
+                + "* cuenta Destino: " + cuentaDestino + "\n"
+                + "* descripcion: " + descripcion + '}';
     }
 
     public TipoTransaccion obtenerTipoTransaccion(String tipo) {

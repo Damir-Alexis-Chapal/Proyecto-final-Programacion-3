@@ -350,7 +350,7 @@ public class Sistema extends javax.swing.JFrame {
         tabbedSystem.setToolTipText("");
         tabbedSystem.setMinimumSize(new java.awt.Dimension(800, 450));
 
-        panelHome.setBackground(new java.awt.Color(245, 245, 245));
+        panelHome.setBackground(new java.awt.Color(255, 255, 255));
         panelHome.setMinimumSize(new java.awt.Dimension(800, 450));
         panelHome.setPreferredSize(new java.awt.Dimension(795, 420));
 
@@ -662,7 +662,7 @@ public class Sistema extends javax.swing.JFrame {
 
         tabbedSystem.addTab("tab2", panelServicios);
 
-        panelMovimientos.setBackground(new java.awt.Color(245, 245, 245));
+        panelMovimientos.setBackground(new java.awt.Color(255, 255, 255));
         panelMovimientos.setMinimumSize(new java.awt.Dimension(800, 450));
 
         javax.swing.GroupLayout panelMovimientosLayout = new javax.swing.GroupLayout(panelMovimientos);
@@ -1273,7 +1273,17 @@ public class Sistema extends javax.swing.JFrame {
     private void jbServiciosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbServiciosMouseClicked
         SystemController control = SystemController.obtenerInstancia();
         for (Cuenta cuentas : usuarioPrueba.getCuentasBancarias()) {
-            jcCuentasBancarias.addItem(cuentas.getNumeroCuenta());
+            boolean existe = false;
+            for (int i = 0; i < jcCuentasBancarias.getItemCount(); i++) {
+                if (jcCuentasBancarias.getItemAt(i).equals(cuentas.getNumeroCuenta())) {
+                    existe = true;
+                    break;
+                }
+            }
+
+            if (!existe) {
+                jcCuentasBancarias.addItem(cuentas.getNumeroCuenta());
+            }
             try {
                 control.usarBotonServicios(usuarioPrueba, String.valueOf(jcCuentasBancarias.getSelectedItem()));
 
@@ -1282,11 +1292,6 @@ public class Sistema extends javax.swing.JFrame {
 
         }
         tabbedSystem.setSelectedIndex(1);
-
-//        ServiciosController serviciosController = ServiciosController.obtenerInstancia();
-//        Wallet wallet = Wallet.obtenerInstancia();
-//        serviciosController.mostrarVentana(wallet.obtenerUsuario(nombreUsuario, correoUsuario));
-
     }//GEN-LAST:event_jbServiciosMouseClicked
 
     private void jButtonHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonHomeMouseClicked
@@ -1424,6 +1429,9 @@ public class Sistema extends javax.swing.JFrame {
         transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
         try {
             control.guardarTransaccion(transaccion);
+            JOptionPane.showMessageDialog(null, "Transacción exitosa!\n" + transaccion.toString());
+            tabbedSystem.setSelectedIndex(0);
+
         } catch (IOException ex) {
             Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }

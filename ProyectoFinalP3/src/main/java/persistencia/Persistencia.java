@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class Persistencia {
     String rutaUsuarioXML = "";
     String rutaTransaccionXML = "";
     String rutaCuentasXML = "";
+    String rutaUsuarioBIN = "";
+    String rutaTransaccionBIN = "";
+    String rutaCuentasBIN = "";
 
     public void guardarUsuario(Usuario usuario) throws IOException {
 
@@ -68,17 +72,20 @@ public class Persistencia {
     private String obtenerRutaProperties(String ruta) {
         Properties properties = new Properties();
         try {
-            //aqui se debe cambiar la ruta del método (argumento) por la ruta en la que se haya almacenado el archivo properties en su pc
-            //en mi caso es el del ejemplo
+
             properties.load(new FileInputStream(new File("C:\\td\\persistencia\\archivos\\config.properties")));
 
+            //para guardar datos en txt
             if (ruta == "usuario") {
                 return properties.get("rutaUsuario").toString();
+
             } else if (ruta == "transaccion") {
                 return properties.get("rutaTransacccion").toString();
+
             } else if (ruta == "cuenta") {
                 return properties.get("rutaCuentas").toString();
 
+                //para guardar copias de los datos en XML
             } else if (ruta == "usuarioXML") {
                 return properties.get("rutaUsuarioXML").toString();
 
@@ -87,6 +94,16 @@ public class Persistencia {
 
             } else if (ruta == "cuentasXML") {
                 return properties.get("rutaCuentasXML").toString();
+
+                //para guardar copias de los dats en binario
+            } else if (ruta == "usuarioBIN") {
+                return properties.get("rutaUsuarioBIN").toString();
+
+            } else if (ruta == "transaccionBIN") {
+                return properties.get("rutaTransacccionBIN").toString();
+
+            } else if (ruta == "cuentasBIN") {
+                return properties.get("rutaCuentasBIN").toString();
             }
 
         } catch (FileNotFoundException e) {
@@ -208,43 +225,71 @@ public class Persistencia {
 
     }
 
-    public void guardarCopias(LinkedList<Usuario> listaUsuarios, LinkedList<Transaccion> listaTransacciones) throws FileNotFoundException {
+    public void guardarCopias(LinkedList<Usuario> listaUsuarios, LinkedList<Transaccion> listaTransacciones) throws FileNotFoundException, IOException {
         rutaUsuarioXML = obtenerRutaProperties("usuarioXML");
         rutaTransaccionXML = obtenerRutaProperties("transaccionXML");
         rutaCuentasXML = obtenerRutaProperties("cuentasXML");
+        rutaUsuarioBIN = obtenerRutaProperties("usuarioBIN");
+        rutaTransaccionBIN = obtenerRutaProperties("transaccionBIN");
+        rutaCuentasBIN = obtenerRutaProperties("cuentasBIN");
 
+        //para serializar las copias en XML
+        //usuarios
         XMLEncoder codificadorUsuarios = new XMLEncoder(new FileOutputStream(rutaUsuarioXML, false));
         codificadorUsuarios.writeObject(listaUsuarios);
         codificadorUsuarios.close();
-        System.err.println("Copia usuarios creada");
-
+        System.err.println("Copia XML de usuarios creada");
+        //transacciones
         XMLEncoder codificadorTransacciones = new XMLEncoder(new FileOutputStream(rutaTransaccionXML, false));
         codificadorTransacciones.writeObject(listaTransacciones);
         codificadorTransacciones.close();
-        System.err.println("Copia transacciones creada");
-        
+        System.err.println("Copia XML de transacciones creada");
+
+        //cuentas
         //tuve que crear toda esta cosa solo para guardar las cuentas y solo porque me habia comido una letra al
         //llamar al método obtener ruta, esta parte funcionaría aun sin el try pero la voy a dejar asi
         try {
-            System.err.println("Iniciando serialización de cuentas");
+
             LinkedList<Cuenta> todasLasCuentas = new LinkedList<>();
             for (Usuario usuario : listaUsuarios) {
                 LinkedList<Cuenta> cuentas = usuario.getCuentasBancarias();
-                System.err.println("Agregando cuentas...");
                 for (Cuenta cuenta : cuentas) {
                     todasLasCuentas.add(cuenta);
-                    System.err.println("Cuenta agregada!");
                 }
             }
 
-            System.err.println("Escribiendo cuentas en XML...");
             XMLEncoder codificadorCuentas = new XMLEncoder(new FileOutputStream(rutaCuentasXML, false));
             codificadorCuentas.writeObject(todasLasCuentas);
             codificadorCuentas.close();
-            System.err.println("Copia cuentas creada");
+            System.err.println("Copia XML de cuentas creada");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //para guardar copias en binario
+        //usuarios
+        ObjectOutputStream salida;
+        salida = new ObjectOutputStream(new FileOutputStream(rutaUsuarioBIN));
+        salida.writeObject(listaUsuarios);
+        System.err.println("Copia BIN de usuarios creada");
+        //transacciones
+        salida = new ObjectOutputStream(new FileOutputStream(rutaTransaccionBIN));
+        salida.writeObject(listaTransacciones);
+        System.err.println("Copia BIN de transacciones creada");
+        //cuentas
+        salida = new ObjectOutputStream(new FileOutputStream(rutaCuentasBIN));
+        try {
+            for (Usuario usuario : listaUsuarios) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    salida.writeObject(cuenta);
+                }
+            }
+            System.err.println("Copia BIN de cuentas creada");
+            salida.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
