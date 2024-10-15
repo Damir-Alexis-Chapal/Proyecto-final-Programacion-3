@@ -4,20 +4,24 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  * @author Alexis Chapal
  */
-public class Cuenta {
+public class Cuenta implements Serializable{
 
     private int idCuenta;
     private Banco banco;
     private String numeroCuenta;
     private TipoCuenta tipoCuenta;
     private double saldo;
-
+    
+    public Cuenta(){
+        
+    }
     public Cuenta(int idCuenta, Banco banco, String numeroCuenta, TipoCuenta tipoCuenta, double saldo) {
         this.idCuenta = idCuenta;
         this.banco = banco;
@@ -64,6 +68,36 @@ public class Cuenta {
         this.saldo = saldo;
     }
     
+    public Banco obtenerBanco(String banco){
+        Banco bancoN = Banco.BANCO_ITAU;
+        
+        if (banco.equals("BANCO_NACIONAL")) {
+            bancoN = Banco.BANCO_NACIONAL;
+        } else if (banco.equals("BANCO_POPULAR")) {
+            bancoN = Banco.BANCO_POPULAR;
+        } else if (banco.equals("BANCO_SANTANDER")) {
+            bancoN = Banco.BANCO_SANTANDER;
+        } else if (banco.equals("BBVA")) {
+            bancoN = Banco.BBVA;
+        } else if (banco.equals("BANCO_ITAU")) {
+            bancoN = Banco.BANCO_ITAU;
+        }
+        return bancoN;
+    }
+    public TipoCuenta obtenerTipoCuenta(String tipoCuenta){
+        
+        TipoCuenta tipo = TipoCuenta.AHORRO;
+        
+        if (tipoCuenta.equals("AHORRO")) {
+            tipo = TipoCuenta.AHORRO;
+        } else if (tipoCuenta.equals("CORRIENTE")) {
+            tipo = TipoCuenta.CORRIENTE;
+        } else if (tipoCuenta.equals("INVERSION")) {
+            tipo = TipoCuenta.INVERSION;
+        }
+        return tipo;
+        
+    }
     @Override
     public String toString() {
         return "CuentaBancaria{"

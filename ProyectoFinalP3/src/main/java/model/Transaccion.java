@@ -4,33 +4,54 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 
 /**
  *
  * @author Alexis Chapal
  */
-public class Transaccion {
-    
+public class Transaccion implements Serializable{
+
     TipoTransaccion tipoTransaccion;
     double idTransaccion;
-    LocalDateTime fecha;
+    String fecha;
     double monto;
-    Cuenta cuentaSalida;
-    Cuenta cuentaEntrada;
+    String cuentaOrigen;
+    String cuentaDestino;
     String descripcion;
-    
-    //METODO PARA LISTAR LAS IDS DE LAS TRANSACCIONES
-    public static ArrayList<Double> listaIds = new ArrayList<>();
-    private static double proximoId= 1;
-    protected double identificadorTransaccion;
-    
-    public Transaccion(){
-        
+    String identificador;
+
+//    //METODO PARA LISTAR LAS IDS DE LAS TRANSACCIONES
+//    public static ArrayList<Double> listaIds = new ArrayList<>();
+//    private static double proximoId = 1;
+
+    public Transaccion() {
+
     }
 
+    public Transaccion(TipoTransaccion tipoTransaccion, double idTransaccion, String fecha,
+            double monto, String cuentaOrigen, String cuentaDestino, String descripcion, String id) {
+        this.tipoTransaccion = tipoTransaccion;
+        this.idTransaccion = idTransaccion;
+        this.fecha = fecha;
+        this.monto = monto;
+        this.cuentaOrigen = cuentaOrigen;
+        this.cuentaDestino = cuentaDestino;
+        this.descripcion = descripcion;
+        this.identificador = id;
+
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
+    
     public TipoTransaccion getTipoTransaccion() {
         return tipoTransaccion;
     }
@@ -47,11 +68,11 @@ public class Transaccion {
         this.idTransaccion = idTransaccion;
     }
 
-    public LocalDateTime getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -63,20 +84,20 @@ public class Transaccion {
         this.monto = monto;
     }
 
-    public Cuenta getCuentaSalida() {
-        return cuentaSalida;
+    public String getCuentaOrigen() {
+        return cuentaOrigen;
     }
 
-    public void setCuentaSalida(Cuenta cuentaSalida) {
-        this.cuentaSalida = cuentaSalida;
+    public void setCuentaOrigen(String cuentaOrigen) {
+        this.cuentaOrigen = cuentaOrigen;
     }
 
-    public Cuenta getCuentaEntrada() {
-        return cuentaEntrada;
+    public String getCuentaDestino() {
+        return cuentaDestino;
     }
 
-    public void setCuentaEntrada(Cuenta cuentaEntrada) {
-        this.cuentaEntrada = cuentaEntrada;
+    public void setCuentaDestino(String cuentaDestino) {
+        this.cuentaDestino = cuentaDestino;
     }
 
     public String getDescripcion() {
@@ -86,45 +107,47 @@ public class Transaccion {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public static ArrayList<Double> getListaIds() {
-        return listaIds;
-    }
-
-    public static void setListaIds(ArrayList<Double> listaIds) {
-        Transaccion.listaIds = listaIds;
-    }
-
-    public static double getProximoId() {
-        return proximoId;
-    }
-
-    public static void setProximoId(double proximoId) {
-        Transaccion.proximoId = proximoId;
-    }
-
-    public double getIdentificadorTransaccion() {
-        return identificadorTransaccion;
-    }
-
-    public void setIdentificadorTransaccion(double identificadorTransaccion) {
-        this.identificadorTransaccion = identificadorTransaccion;
-    }
+//
+//    public static ArrayList<Double> getListaIds() {
+//        return listaIds;
+//    }
+//
+//    public static void setListaIds(ArrayList<Double> listaIds) {
+//        Transaccion.listaIds = listaIds;
+//    }
+//
+//    public static double getProximoId() {
+//        return proximoId;
+//    }
+//
+//    public static void setProximoId(double proximoId) {
+//        Transaccion.proximoId = proximoId;
+//    }
 
     @Override
     public String toString() {
-        return "Transaccion{" 
+        return "Transaccion{"
                 + "tipoTransaccion=" + tipoTransaccion + '\''
                 + ", idTransaccion=" + idTransaccion + '\''
                 + ", fecha=" + fecha + '\''
                 + ", monto=" + monto + '\''
-                + ", cuentaSalida=" + cuentaSalida  + '\''
-                + ", cuentaEntrada=" + cuentaEntrada + '\''
-                + ", descripcion=" + descripcion + '\''
-                + ", identificadorTransaccion=" + identificadorTransaccion + '}';
+                + ", cuentaSalida=" + cuentaOrigen + '\''
+                + ", cuentaEntrada=" + cuentaDestino + '\''
+                + ", descripcion=" + descripcion + '}';
     }
-    
-    
-    
-}
 
+    public TipoTransaccion obtenerTipoTransaccion(String tipo) {
+        TipoTransaccion tipoDos = TipoTransaccion.DEPOSITO;
+
+        if (tipo.equals("DEPOSITO")) {
+            tipoDos = TipoTransaccion.DEPOSITO;
+        } else if (tipo.equals("RETIRO")) {
+            tipoDos = TipoTransaccion.RETIRO;
+        } else if (tipo.equals("TRANSFERENCIA")) {
+            tipoDos = TipoTransaccion.TRANSFERENCIA;
+        }
+        return tipoDos;
+
+    }
+
+}

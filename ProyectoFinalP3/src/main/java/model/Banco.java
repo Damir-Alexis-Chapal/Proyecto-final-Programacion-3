@@ -4,11 +4,13 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Alexis Chapal
  */
-public enum Banco {
+public enum Banco implements Serializable {
     BANCO_NACIONAL,
     BANCO_POPULAR,
     BANCO_SANTANDER,

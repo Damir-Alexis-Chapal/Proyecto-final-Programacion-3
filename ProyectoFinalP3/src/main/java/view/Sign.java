@@ -392,12 +392,16 @@ public class Sign extends javax.swing.JFrame {
         } else if (banco.equals("BANCO_ITAU")) {
             bancoN = Banco.BANCO_ITAU;
         }
-
+        
+        //aqui se finaliza creando la cuenta bancaria y agregandola a la lista de cuentas del usuario
         Cuenta cuenta = new Cuenta(idCuenta, bancoN, numeroCuenta, tipo, saldo);
-
         cuentasBancarias.add(cuenta);
-
-        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, correo, telefono, direccion, saldo);
+        
+        //aqui se crea el nuevo usuario, y se setea la lista de cuentas por aparte
+        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, 
+                correo, telefono, direccion, saldo);
+        
+        nuevoUsuario.setCuentasBancarias(cuentasBancarias);
 
         try {
             controlador.agregarUsuario(nuevoUsuario);

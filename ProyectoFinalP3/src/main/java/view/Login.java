@@ -270,12 +270,13 @@ public class Login extends javax.swing.JFrame {
             Sistema sistema = Sistema.obtenerInstancia();
             
             Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
+            System.err.println(usuario.mostrarInformacionUsuario());
             controlDos.setearDatosUsuario(usuario);
-            ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder"+" Usuario: "+txtUsuario.getText()+" "+txtCorreo.getText(), 1, "ingresar/correcto", "C:\\td\\persistencia\\log\\registroApp.log");
+            ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder"+" Usuario: "+txtUsuario.getText()+" "+txtCorreo.getText(), 1, "ingresar/correcto");
             JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
             sistema.setVisible(true);
         }else{
-            ArchivoUtil.guardarRegistroLog("datos incorrectos al intentar acceder", 2, "ingresar/incorrecto", "C:\\td\\persistencia\\log\\registroApp.log");
+            ArchivoUtil.guardarRegistroLog("datos incorrectos al intentar acceder", 2, "ingresar/incorrecto");
             JOptionPane.showMessageDialog(null,"DATOS INCORRECTOS");
         }
 

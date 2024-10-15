@@ -50,8 +50,8 @@ public class ArchivoUtil {
         return contenido;
     }
 
-    public static void guardarRegistroLog(String mensajeLog, int nivel, String accion, String rutaArchivo)
-    {
+    public static void guardarRegistroLog(String mensajeLog, int nivel, String accion){
+        String rutaArchivo ="C:\\td\\persistencia\\log\\walletLog.txt";
         Logger LOGGER = Logger.getLogger(accion);
         FileHandler fileHandler =  null;
 

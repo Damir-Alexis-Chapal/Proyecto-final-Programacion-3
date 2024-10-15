@@ -20,11 +20,15 @@ public class ArchivoProperties {
 
         // Establecer algunas propiedades (clave-valor)
         //en esta parte deben ingresar la ruta en la que se encuentra el archivo UserData en su pc, aquí funciona con la ruta de mi pc
-        propiedades.setProperty("rutaUsuario", "C:\\td\\persistencia\\archivos\\UserData.txt");
-        propiedades.setProperty("rutaTransacccion", "C:\\td\\persistencia\\archivos\\objeto_Transacion.txt");
+        propiedades.setProperty("rutaUsuario", "C:\\td\\persistencia\\archivos\\usuarios.txt");
+        propiedades.setProperty("rutaTransacccion", "C:\\td\\persistencia\\archivos\\transaciones.txt");
+        propiedades.setProperty("rutaCuentas", "C:\\td\\persistencia\\archivos\\cuentasBancarias.txt");
+        propiedades.setProperty("rutaUsuarioXML", "C:\\td\\persistencia\\respaldo\\copiaUsuarios.XMl");
+        propiedades.setProperty("rutaTransacccionXML", "C:\\td\\persistencia\\respaldo\\copiaTransaciones.XML");
+        propiedades.setProperty("rutaCuentasXML", "C:\\td\\persistencia\\respaldo\\copiaCuentasBancarias.XML");
 
         // Intentar escribir el archivo properties
-        try (FileOutputStream salida = new FileOutputStream("config.properties")) {
+        try (FileOutputStream salida = new FileOutputStream("C:\\td\\persistencia\\archivos\\config.properties")) {
             // Guardar las propiedades en el archivo con un comentario opcional
             propiedades.store(salida, "Configuración de la aplicación");
             System.out.println("Archivo properties creado correctamente.");

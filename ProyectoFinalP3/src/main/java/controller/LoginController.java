@@ -36,7 +36,7 @@ public class LoginController {
 
     public static boolean validarUsuario(String nombreUsuario, String correo) {
         Wallet wallet = Wallet.obtenerInstancia();
-        ArchivoUtil.guardarRegistroLog("Usuario"+nombreUsuario+" entro al sistema", 1, "Login", "C:\\td\\persistencia\\log\\registroApp.log");
+        ArchivoUtil.guardarRegistroLog("Usuario"+nombreUsuario+" entro al sistema", 1, "Login");
         return(wallet.validarUsuario(nombreUsuario, correo));
     }
 

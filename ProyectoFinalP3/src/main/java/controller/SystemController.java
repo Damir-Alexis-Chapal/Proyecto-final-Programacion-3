@@ -6,8 +6,11 @@ package controller;
 
 import app.Wallet;
 import java.io.IOException;
+import model.Cuenta;
+import model.Transaccion;
 import model.Usuario;
 import persistencia.ArchivoUtil;
+import persistencia.Persistencia;
 import view.Sistema;
 
 /**
@@ -35,15 +38,38 @@ public class SystemController {
         sistema.jbSaldoDisponible.setText("$" + String.format("%.2f", usuario.getSaldoTotal()));
         sistema.nombreUsuario = (usuario.getNombreCompleto());
         sistema.correoUsuario = (usuario.getCorreoElectronico());
+        sistema.usuarioPrueba = usuario;
 
     }
 
     public void editarUsuario(Usuario usuario) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
-        int idUsuario = usuario.getIdUsuario()-1;
+        int idUsuario = usuario.getIdUsuario() - 1;
         wallet.editarUsuario(idUsuario, usuario);
-        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario: "+usuario.getNombreCompleto(), 1, "editar nombre usuario", "C:\\td\\persistencia\\log\\registroApp.log");
+        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario: " + usuario.getNombreCompleto(), 1, "editar nombre usuario");
 
+    }
+
+    public void usarBotonServicios(Usuario usuario, String numero) {
+        Sistema sistema = Sistema.obtenerInstancia();
+        for(int i=0; i<usuario.getCuentasBancarias().size(); i++){
+            if(usuario.getCuentasBancarias().get(i).getNumeroCuenta().equals(numero)){
+                sistema.txtBanco.setText(usuario.getCuentasBancarias().get(i).getBanco().toString());
+                sistema.txtNumeroCuenta.setText(usuario.getCuentasBancarias().get(i).getNumeroCuenta());
+                sistema.txtTipoCuenta.setText(usuario.getCuentasBancarias().get(i).getTipoCuenta().toString());
+                sistema.txtSaldoCuenta.setText(String.valueOf(usuario.getCuentasBancarias().get(i).getSaldo()));
+                
+            }
+        }
+        
+    }
+
+    public void guardarTransaccion(Transaccion transaccion) throws IOException {
+        Wallet wallet = Wallet.obtenerInstancia();
+        wallet.agregarTransaccion(transaccion);
+        System.err.println("Transaccion exitosa!");
+        System.err.println(transaccion.toString());
+    
     }
 
 }

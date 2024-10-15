@@ -40,7 +40,6 @@ public class SignController {
         Wallet wallet = Wallet.obtenerInstancia();
         wallet.agregarUsuario(usuario);
         logger.info("AVISO NUEVO USUARIO AGREGADO: " + usuario.mostrarInformacionUsuario());
-        System.out.println(usuario.mostrarInformacionUsuario());
         System.out.println("Usuario agregado");
     }
     

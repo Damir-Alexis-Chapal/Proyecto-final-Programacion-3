@@ -4,11 +4,13 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Alexis Chapal
  */
-public enum TipoCuenta {
+public enum TipoCuenta implements Serializable {
     AHORRO,
     CORRIENTE,
     INVERSION
