@@ -18,7 +18,7 @@ import model.Cuenta;
 import model.TipoTransaccion;
 import model.Transaccion;
 import model.Usuario;
-import persistencia.Persistencia;
+import utils.Persistencia;
 
 /**
  *
@@ -38,10 +38,14 @@ public class Sistema extends javax.swing.JFrame {
 
     private Sistema() {
         initComponents();
+        for (int i = 1; i < tabbedSystem.getTabCount(); i++) {
+            tabbedSystem.setEnabledAt(i, false);
+        }
         tabbedSystem.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
             @Override
             protected int calculateTabAreaHeight(int tabPlacement, int runCount, int maxTabHeight) {
-                return 0; // Ocultar la cabecera de las pestañas
+                return 0;
+
             }
         });
         this.setLocationRelativeTo(null);
@@ -79,7 +83,7 @@ public class Sistema extends javax.swing.JFrame {
         jbNombreUsuario = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jbSaldoDisponible = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tipoCuentaEnUso = new javax.swing.JTextField();
         panelServicios = new javax.swing.JPanel();
         jcCuentasBancarias = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -123,6 +127,8 @@ public class Sistema extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         botonFinalizar = new javax.swing.JPanel();
         jbFinalizar = new javax.swing.JLabel();
+        botonAgregarCuenta = new javax.swing.JPanel();
+        agregarCuenta = new javax.swing.JLabel();
         panelEnvios = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         txtTipoTransaccion = new javax.swing.JTextField();
@@ -146,7 +152,7 @@ public class Sistema extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         jSeparator18 = new javax.swing.JSeparator();
         botonFinalizarDos = new javax.swing.JPanel();
-        jbFinalizar1 = new javax.swing.JLabel();
+        finalizarEnvio = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -364,9 +370,9 @@ public class Sistema extends javax.swing.JFrame {
         jbSaldoDisponible.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jbSaldoDisponible.setText("$234,568,500.00");
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cuenta de ahorros", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setBorder(null);
+        tipoCuentaEnUso.setEditable(false);
+        tipoCuentaEnUso.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        tipoCuentaEnUso.setText("CUENTA DE AHORROS");
 
         javax.swing.GroupLayout panelHomeLayout = new javax.swing.GroupLayout(panelHome);
         panelHome.setLayout(panelHomeLayout);
@@ -385,7 +391,7 @@ public class Sistema extends javax.swing.JFrame {
                         .addComponent(jLabel6))
                     .addGroup(panelHomeLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tipoCuentaEnUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(310, Short.MAX_VALUE))
         );
         panelHomeLayout.setVerticalGroup(
@@ -394,12 +400,12 @@ public class Sistema extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jbNombreUsuario)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
+                .addComponent(tipoCuentaEnUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbSaldoDisponible)
-                .addContainerGap(317, Short.MAX_VALUE))
+                .addContainerGap(319, Short.MAX_VALUE))
         );
 
         tabbedSystem.addTab("tab1", panelHome);
@@ -841,27 +847,62 @@ public class Sistema extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        botonAgregarCuenta.setBackground(new java.awt.Color(70, 130, 180));
+
+        agregarCuenta.setBackground(new java.awt.Color(70, 130, 180));
+        agregarCuenta.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        agregarCuenta.setForeground(new java.awt.Color(255, 255, 255));
+        agregarCuenta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        agregarCuenta.setText("AGREGAR CUENTA");
+        agregarCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                agregarCuentaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                agregarCuentaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                agregarCuentaMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout botonAgregarCuentaLayout = new javax.swing.GroupLayout(botonAgregarCuenta);
+        botonAgregarCuenta.setLayout(botonAgregarCuentaLayout);
+        botonAgregarCuentaLayout.setHorizontalGroup(
+            botonAgregarCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(agregarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+        );
+        botonAgregarCuentaLayout.setVerticalGroup(
+            botonAgregarCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(agregarCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
         panelUsuarioLayout.setHorizontalGroup(
             panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelUsuarioLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator1)
-                    .addComponent(jSeparator2)
-                    .addComponent(jSeparator3)
-                    .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUsuarioLayout.createSequentialGroup()
+                .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelUsuarioLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelUsuarioLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator1)
+                            .addComponent(jSeparator2)
+                            .addComponent(jSeparator3)
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(71, 71, 71))
         );
         panelUsuarioLayout.setVerticalGroup(
@@ -894,7 +935,9 @@ public class Sistema extends javax.swing.JFrame {
                 .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         tabbedSystem.addTab("tab4", panelUsuario);
@@ -1015,24 +1058,24 @@ public class Sistema extends javax.swing.JFrame {
 
         botonFinalizarDos.setBackground(new java.awt.Color(255, 255, 255));
 
-        jbFinalizar1.setBackground(new java.awt.Color(255, 255, 255));
-        jbFinalizar1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jbFinalizar1.setForeground(new java.awt.Color(70, 130, 180));
-        jbFinalizar1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jbFinalizar1.setText("FINALIZAR ");
-        jbFinalizar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbFinalizar1.addMouseListener(new java.awt.event.MouseAdapter() {
+        finalizarEnvio.setBackground(new java.awt.Color(255, 255, 255));
+        finalizarEnvio.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        finalizarEnvio.setForeground(new java.awt.Color(70, 130, 180));
+        finalizarEnvio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        finalizarEnvio.setText("FINALIZAR ");
+        finalizarEnvio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        finalizarEnvio.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jbFinalizar1MouseClicked(evt);
+                finalizarEnvioMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jbFinalizar1MouseEntered(evt);
+                finalizarEnvioMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jbFinalizar1MouseExited(evt);
+                finalizarEnvioMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jbFinalizar1MousePressed(evt);
+                finalizarEnvioMousePressed(evt);
             }
         });
 
@@ -1040,11 +1083,11 @@ public class Sistema extends javax.swing.JFrame {
         botonFinalizarDos.setLayout(botonFinalizarDosLayout);
         botonFinalizarDosLayout.setHorizontalGroup(
             botonFinalizarDosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jbFinalizar1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(finalizarEnvio, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
         );
         botonFinalizarDosLayout.setVerticalGroup(
             botonFinalizarDosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jbFinalizar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+            .addComponent(finalizarEnvio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
@@ -1404,51 +1447,72 @@ public class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
-    private void jbFinalizar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizar1MouseClicked
-        SystemController control = SystemController.obtenerInstancia();
+    private void finalizarEnvioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finalizarEnvioMouseClicked
+        if (Double.parseDouble(txtCantidad.getText()) < usuarioPrueba.getSaldoTotal()) {
+            Wallet wallet = Wallet.obtenerInstancia();
+            boolean ban = false;
 
-        double idTransaccion = Double.parseDouble(txtNumeroTransaccion.getText());
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime fecha = LocalDateTime.parse(txtFecha.getText(), formato);
-        double monto = Double.parseDouble(txtCantidad.getText());
+            for (Usuario usuario : wallet.getUsuarios()) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(txtCuentaDestino.getText().trim())) {
+                        ban = true;
+                        break;
+                    }
+                }
+            }
+            if (ban) {
+                SystemController control = SystemController.obtenerInstancia();
 
-        String cuentaOrigen = txtCuentaOrigen.getText();
-        String cuentaDestino = txtCuentaDestino.getText();
-        String descripcion = txtDescripcion.getText();
+                double idTransaccion = Double.parseDouble(txtNumeroTransaccion.getText());
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDateTime fecha = LocalDateTime.parse(txtFecha.getText(), formato);
+                double monto = Double.parseDouble(txtCantidad.getText());
 
-        Transaccion transaccion = new Transaccion();
+                String cuentaOrigen = txtCuentaOrigen.getText();
+                String cuentaDestino = txtCuentaDestino.getText();
+                String descripcion = txtDescripcion.getText();
 
-        TipoTransaccion tipo = transaccion.obtenerTipoTransaccion(txtTipoTransaccion.getText());
-        transaccion.setCuentaDestino(cuentaDestino);
-        transaccion.setCuentaOrigen(cuentaOrigen);
-        transaccion.setDescripcion(descripcion);
-        transaccion.setFecha(fecha.toString());
-        transaccion.setIdTransaccion(idTransaccion);
-        transaccion.setMonto(monto);
-        transaccion.setTipoTransaccion(tipo);
-        transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
-        try {
-            control.guardarTransaccion(transaccion);
-            JOptionPane.showMessageDialog(null, "Transacción exitosa!\n" + transaccion.toString());
-            tabbedSystem.setSelectedIndex(0);
+                Transaccion transaccion = new Transaccion();
 
-        } catch (IOException ex) {
-            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                TipoTransaccion tipo = transaccion.obtenerTipoTransaccion(txtTipoTransaccion.getText());
+                transaccion.setCuentaDestino(cuentaDestino);
+                transaccion.setCuentaOrigen(cuentaOrigen);
+                transaccion.setDescripcion(descripcion);
+                transaccion.setFecha(fecha.toString());
+                transaccion.setIdTransaccion(idTransaccion);
+                transaccion.setMonto(monto);
+                transaccion.setTipoTransaccion(tipo);
+                transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
+                try {
+                    control.guardarTransaccion(transaccion);
+                    JOptionPane.showMessageDialog(null, "Transacción exitosa!\n" + transaccion.toString());
+                    tabbedSystem.setSelectedIndex(0);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Saldo insuficiente");
         }
 
-    }//GEN-LAST:event_jbFinalizar1MouseClicked
 
-    private void jbFinalizar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizar1MouseEntered
+    }//GEN-LAST:event_finalizarEnvioMouseClicked
+
+    private void finalizarEnvioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finalizarEnvioMouseEntered
         botonFinalizarDos.setBackground(new Color(235, 236, 236));
-    }//GEN-LAST:event_jbFinalizar1MouseEntered
+    }//GEN-LAST:event_finalizarEnvioMouseEntered
 
-    private void jbFinalizar1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizar1MouseExited
+    private void finalizarEnvioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finalizarEnvioMouseExited
         botonFinalizarDos.setBackground(Color.WHITE);
-    }//GEN-LAST:event_jbFinalizar1MouseExited
+    }//GEN-LAST:event_finalizarEnvioMouseExited
 
-    private void jbFinalizar1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizar1MousePressed
+    private void finalizarEnvioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finalizarEnvioMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jbFinalizar1MousePressed
+    }//GEN-LAST:event_finalizarEnvioMousePressed
 
     private void jbServiciosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbServiciosMouseEntered
         botonServicios.setBackground(new Color(0, 54, 132));
@@ -1473,6 +1537,19 @@ public class Sistema extends javax.swing.JFrame {
     private void jLabel4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseExited
         botonCuenta.setBackground(new Color(0, 51, 102));
     }//GEN-LAST:event_jLabel4MouseExited
+
+    private void agregarCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarCuentaMouseClicked
+        AddAccount añadir = new AddAccount();
+        añadir.setVisible(true);
+    }//GEN-LAST:event_agregarCuentaMouseClicked
+
+    private void agregarCuentaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarCuentaMouseEntered
+        botonAgregarCuenta.setBackground(new Color(78, 123, 160));
+    }//GEN-LAST:event_agregarCuentaMouseEntered
+
+    private void agregarCuentaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agregarCuentaMouseExited
+        botonAgregarCuenta.setBackground(new Color(70, 130, 180));
+    }//GEN-LAST:event_agregarCuentaMouseExited
 
     /**
      * @param args the command line arguments
@@ -1511,6 +1588,8 @@ public class Sistema extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel agregarCuenta;
+    private javax.swing.JPanel botonAgregarCuenta;
     private javax.swing.JPanel botonCuenta;
     private javax.swing.JPanel botonDepositos;
     private javax.swing.JPanel botonEnvios;
@@ -1521,8 +1600,8 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel botonRetiros;
     private javax.swing.JPanel botonServicios;
     private javax.swing.JLabel btnRetiros;
+    private javax.swing.JLabel finalizarEnvio;
     private javax.swing.JLabel jButtonHome;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1568,7 +1647,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jbDepositos;
     private javax.swing.JLabel jbEnvios;
     private javax.swing.JLabel jbFinalizar;
-    private javax.swing.JLabel jbFinalizar1;
     public static javax.swing.JLabel jbNombreNuevoDato;
     public static javax.swing.JLabel jbNombreUsuario;
     public static javax.swing.JLabel jbSaldoDisponible;
@@ -1583,6 +1661,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel panelSystem;
     private javax.swing.JPanel panelUsuario;
     public static javax.swing.JTabbedPane tabbedSystem;
+    private javax.swing.JTextField tipoCuentaEnUso;
     public static javax.swing.JTextField txtBanco;
     private javax.swing.JTextField txtCantidad;
     public static javax.swing.JTextField txtCorreo;

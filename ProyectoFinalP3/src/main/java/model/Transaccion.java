@@ -4,15 +4,18 @@
  */
 package model;
 
+import app.Wallet;
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import utils.Persistencia;
 
 /**
  *
  * @author Alexis Chapal
  */
-public class Transaccion implements Serializable{
+public class Transaccion implements Serializable {
 
     TipoTransaccion tipoTransaccion;
     double idTransaccion;
@@ -26,7 +29,6 @@ public class Transaccion implements Serializable{
 //    //METODO PARA LISTAR LAS IDS DE LAS TRANSACCIONES
 //    public static ArrayList<Double> listaIds = new ArrayList<>();
 //    private static double proximoId = 1;
-
     public Transaccion() {
 
     }
@@ -51,7 +53,7 @@ public class Transaccion implements Serializable{
     public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
-    
+
     public TipoTransaccion getTipoTransaccion() {
         return tipoTransaccion;
     }
@@ -107,22 +109,6 @@ public class Transaccion implements Serializable{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-//
-//    public static ArrayList<Double> getListaIds() {
-//        return listaIds;
-//    }
-//
-//    public static void setListaIds(ArrayList<Double> listaIds) {
-//        Transaccion.listaIds = listaIds;
-//    }
-//
-//    public static double getProximoId() {
-//        return proximoId;
-//    }
-//
-//    public static void setProximoId(double proximoId) {
-//        Transaccion.proximoId = proximoId;
-//    }
 
     @Override
     public String toString() {

@@ -9,8 +9,8 @@ import java.io.IOException;
 import model.Cuenta;
 import model.Transaccion;
 import model.Usuario;
-import persistencia.ArchivoUtil;
-import persistencia.Persistencia;
+import utils.ArchivoUtil;
+import utils.Persistencia;
 import view.Sistema;
 
 /**
@@ -52,24 +52,45 @@ public class SystemController {
 
     public void usarBotonServicios(Usuario usuario, String numero) {
         Sistema sistema = Sistema.obtenerInstancia();
-        for(int i=0; i<usuario.getCuentasBancarias().size(); i++){
-            if(usuario.getCuentasBancarias().get(i).getNumeroCuenta().equals(numero)){
+        for (int i = 0; i < usuario.getCuentasBancarias().size(); i++) {
+            if (usuario.getCuentasBancarias().get(i).getNumeroCuenta().equals(numero)) {
                 sistema.txtBanco.setText(usuario.getCuentasBancarias().get(i).getBanco().toString());
                 sistema.txtNumeroCuenta.setText(usuario.getCuentasBancarias().get(i).getNumeroCuenta());
                 sistema.txtTipoCuenta.setText(usuario.getCuentasBancarias().get(i).getTipoCuenta().toString());
                 sistema.txtSaldoCuenta.setText(String.valueOf(usuario.getCuentasBancarias().get(i).getSaldo()));
-                
             }
         }
-        
+
     }
 
     public void guardarTransaccion(Transaccion transaccion) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
+        Persistencia persistencia = Persistencia.obtenerInstancia();
         wallet.agregarTransaccion(transaccion);
-        System.err.println("Transaccion exitosa!");
+
+        for (Usuario usuario : wallet.getUsuarios()) {
+            for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                    double saldo = cuenta.getSaldo();
+                    cuenta.setSaldo(saldo + transaccion.getMonto());
+                    usuario.getCuentasBancarias().set(cuenta.getIdCuenta() - 1, cuenta);
+                }
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
+                    double saldoDos = cuenta.getSaldo();
+                    cuenta.setSaldo(saldoDos - transaccion.getMonto());
+                    usuario.getCuentasBancarias().set(cuenta.getIdCuenta() - 1, cuenta);
+                }
+
+            }
+
+            wallet.editarUsuario(usuario.getIdUsuario(), usuario);
+        }
+
+        persistencia.guardarUsuarios(wallet.getUsuarios());
+
+        System.err.println("Transacción exitosa!");
         System.err.println(transaccion.toString());
-    
     }
 
 }

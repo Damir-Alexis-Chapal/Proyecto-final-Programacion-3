@@ -13,8 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Usuario;
-import persistencia.ArchivoUtil;
-import persistencia.Persistencia;
+import utils.ArchivoUtil;
+import utils.Persistencia;
 
 /**
  *
@@ -82,6 +82,14 @@ public class Login extends javax.swing.JFrame {
         txtUsuario.setText("Ingrese su nombre de usuario");
         txtUsuario.setBorder(null);
         txtUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtUsuarioFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUsuarioFocusLost(evt);
+            }
+        });
         txtUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtUsuarioMouseClicked(evt);
@@ -160,6 +168,14 @@ public class Login extends javax.swing.JFrame {
         txtCorreo.setText("Ingrese su correo electronico");
         txtCorreo.setBorder(null);
         txtCorreo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtCorreo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCorreoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCorreoFocusLost(evt);
+            }
+        });
         txtCorreo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtCorreoMouseClicked(evt);
@@ -228,8 +244,8 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
-        txtUsuario.setText("");
-        txtUsuario.setForeground(Color.BLACK);
+//        txtUsuario.setText("");
+//        txtUsuario.setForeground(Color.BLACK);
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void jbIngresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbIngresarMouseEntered
@@ -245,14 +261,14 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioMouseClicked
 
     private void txtUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMousePressed
-        if (txtUsuario.getText().equals("Ingrese su nombre de usuario")) {
-            txtUsuario.setText("");
-            txtUsuario.setForeground(Color.BLACK);
-        }
-        if (String.valueOf(txtCorreo.getText()).equals("")) {
-            txtCorreo.setText("Ingrese su correo electronico");
-            txtCorreo.setForeground(new Color(204, 204, 204));
-        }
+//        if (txtUsuario.getText().equals("Ingrese su nombre de usuario")) {
+//            txtUsuario.setText("");
+//            txtUsuario.setForeground(Color.BLACK);
+//        }
+//        if (String.valueOf(txtCorreo.getText()).equals("")) {
+//            txtCorreo.setText("Ingrese su correo electronico");
+//            txtCorreo.setForeground(new Color(204, 204, 204));
+//        }
 
     }//GEN-LAST:event_txtUsuarioMousePressed
 
@@ -268,16 +284,17 @@ public class Login extends javax.swing.JFrame {
         }
         if (control.validarUsuario(txtUsuario.getText(), txtCorreo.getText())) {
             Sistema sistema = Sistema.obtenerInstancia();
-            
+
             Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
             System.err.println(usuario.mostrarInformacionUsuario());
             controlDos.setearDatosUsuario(usuario);
-            ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder"+" Usuario: "+txtUsuario.getText()+" "+txtCorreo.getText(), 1, "ingresar/correcto");
+            ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder" + " Usuario: " + txtUsuario.getText() + " " + txtCorreo.getText(), 1, "ingresar/correcto");
             JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
             sistema.setVisible(true);
-        }else{
+            
+        } else {
             ArchivoUtil.guardarRegistroLog("datos incorrectos al intentar acceder", 2, "ingresar/incorrecto");
-            JOptionPane.showMessageDialog(null,"DATOS INCORRECTOS");
+            JOptionPane.showMessageDialog(null, "DATOS INCORRECTOS");
         }
 
     }//GEN-LAST:event_jbIngresarMouseClicked
@@ -301,14 +318,14 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoMouseClicked
 
     private void txtCorreoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCorreoMousePressed
-        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
-            txtCorreo.setText("");
-            txtCorreo.setForeground(Color.BLACK);
-        }
-        if (String.valueOf(txtUsuario.getText()).equals("")) {
-            txtUsuario.setText("Ingrese su nombre de usuario");
-            txtUsuario.setForeground(new Color(204, 204, 204));
-        }
+//        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
+//            txtCorreo.setText("");
+//            txtCorreo.setForeground(Color.BLACK);
+//        }
+//        if (String.valueOf(txtUsuario.getText()).equals("")) {
+//            txtUsuario.setText("Ingrese su nombre de usuario");
+//            txtUsuario.setForeground(new Color(204, 204, 204));
+//        }
     }//GEN-LAST:event_txtCorreoMousePressed
 
     private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
@@ -316,12 +333,41 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void txtUsuarioInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtUsuarioInputMethodTextChanged
-        
+
     }//GEN-LAST:event_txtUsuarioInputMethodTextChanged
 
     private void txtUsuarioCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtUsuarioCaretPositionChanged
-        
+
     }//GEN-LAST:event_txtUsuarioCaretPositionChanged
+
+    private void txtUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusGained
+        if (txtUsuario.getText().equals("Ingrese su nombre de usuario")) {
+            txtUsuario.setText("");
+            txtUsuario.setForeground(Color.BLACK);
+        }
+
+    }//GEN-LAST:event_txtUsuarioFocusGained
+
+    private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
+        if (txtUsuario.getText().isEmpty()) {
+            txtUsuario.setText("Ingrese su nombre de usuario");
+            txtUsuario.setForeground(new Color(204, 204, 204));
+        }
+    }//GEN-LAST:event_txtUsuarioFocusLost
+
+    private void txtCorreoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusGained
+        if (txtCorreo.getText().equals("Ingrese su correo electronico")) {
+            txtCorreo.setText("");
+            txtCorreo.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtCorreoFocusGained
+
+    private void txtCorreoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCorreoFocusLost
+        if (txtCorreo.getText().isEmpty()) {
+            txtCorreo.setText("Ingrese su correo electronico");
+            txtCorreo.setForeground(new Color(204, 204, 204));
+        }
+    }//GEN-LAST:event_txtCorreoFocusLost
 
     /**
      * @param args the command line arguments

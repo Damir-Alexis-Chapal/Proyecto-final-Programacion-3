@@ -8,7 +8,7 @@ import javax.swing.SwingConstants;
 import model.Cuenta;
 import model.Transaccion;
 import model.Usuario;
-import persistencia.Persistencia;
+import utils.Persistencia;
 import view.*;
 
 /**
@@ -44,9 +44,9 @@ public class Wallet implements Serializable {
             System.err.println("Transacciones cargadas...");
             persistencia.cargarUsuarios(instancia);
             System.err.println("Usuarios cargados...");
-            
+
             persistencia.guardarCopias(listaUsuarios, listaTransacciones);
-            
+
         } catch (Exception e) {
 
         }
@@ -93,9 +93,20 @@ public class Wallet implements Serializable {
 
     public void editarUsuario(int idUsuario, Usuario usuario) throws IOException {
 
-        listaUsuarios.set(idUsuario, usuario);
-        Persistencia persistencia = Persistencia.obtenerInstancia();
-        persistencia.guardarUsuarios(listaUsuarios);
+        int index = -1;
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            if (listaUsuarios.get(i).getIdUsuario()== idUsuario) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            listaUsuarios.set(index, usuario);
+            Persistencia persistencia = Persistencia.obtenerInstancia();
+            persistencia.guardarUsuarios(listaUsuarios);
+        } else {
+            System.out.println("Usuario no encontrado.");
+        }
     }
 
     public void agregarTransaccion(Transaccion transaccion) throws IOException {

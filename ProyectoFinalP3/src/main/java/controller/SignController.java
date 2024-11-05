@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import model.Usuario;
-import persistencia.ArchivoUtil;
-import persistencia.Persistencia;
+import utils.ArchivoUtil;
+import utils.Persistencia;
 
 /**
  *

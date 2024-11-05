@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package persistencia;
+package utils;
 
 import app.Wallet;
 import java.beans.XMLEncoder;
@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -145,39 +147,53 @@ public class Persistencia {
 
     public LinkedList<Usuario> cargarUsuarios(Wallet wallet) throws IOException {
 
-        rutaUsuario = obtenerRutaProperties("usuario");
-        rutaCuentasBancarias = obtenerRutaProperties("cuenta");
-        ArrayList<String> listaCuentas = ArchivoUtil.leerArchivo(rutaCuentasBancarias);
-        ArrayList<String> listaUsuarios = ArchivoUtil.leerArchivo(rutaUsuario);
+        try {
+            rutaUsuario = obtenerRutaProperties("usuario");
+            rutaCuentasBancarias = obtenerRutaProperties("cuenta");
 
-        TipoCuenta tipo = TipoCuenta.AHORRO;
-        Banco banco = Banco.BANCO_ITAU;
-
-        for (String txtUsuario : listaUsuarios) {
-            String[] split = txtUsuario.split("@@");
-            Usuario usuario = new Usuario(Integer.parseInt(split[0]), split[1], split[2], split[3], split[4],
-                    Double.parseDouble(split[5]));
-
-            LinkedList<Cuenta> cuentas = new LinkedList<>();
-
-            for (String account : listaCuentas) {
-                String[] splitAccount = account.split("@@");
-                Cuenta cuenta = new Cuenta();
-                banco = cuenta.obtenerBanco(splitAccount[1]);
-                tipo = cuenta.obtenerTipoCuenta(splitAccount[3]);
-
-                cuenta = new Cuenta(Integer.parseInt(splitAccount[0]), banco, splitAccount[2],
-                        tipo, Double.parseDouble(splitAccount[4]));
-                if (split[0].equals(splitAccount[5])) {
-                    cuentas.add(cuenta);
-                }
-
+            // Validar existencia de archivos
+            if (!Files.exists(Paths.get(rutaUsuario))) {
+                throw new IOException("El archivo de usuarios no existe en la ruta especificada: " + rutaUsuario);
             }
-            usuario.setCuentasBancarias(cuentas);
-            LinkedList<Usuario> usuarios = wallet.getUsuarios();
-            usuarios.add(usuario);
+            if (!Files.exists(Paths.get(rutaCuentasBancarias))) {
+                throw new IOException("El archivo de cuentas bancarias no existe en la ruta especificada: " + rutaCuentasBancarias);
+            }
+
+            ArrayList<String> listaCuentas = ArchivoUtil.leerArchivo(rutaCuentasBancarias);
+            ArrayList<String> listaUsuarios = ArchivoUtil.leerArchivo(rutaUsuario);
+
+            TipoCuenta tipo = TipoCuenta.AHORRO;
+            Banco banco = Banco.BANCO_ITAU;
+
+            for (String txtUsuario : listaUsuarios) {
+                String[] split = txtUsuario.split("@@");
+                Usuario usuario = new Usuario(Integer.parseInt(split[0]), split[1], split[2], split[3], split[4],
+                        Double.parseDouble(split[5]));
+
+                LinkedList<Cuenta> cuentas = new LinkedList<>();
+
+                for (String account : listaCuentas) {
+                    String[] splitAccount = account.split("@@");
+                    Cuenta cuenta = new Cuenta();
+                    banco = cuenta.obtenerBanco(splitAccount[1]);
+                    tipo = cuenta.obtenerTipoCuenta(splitAccount[3]);
+
+                    cuenta = new Cuenta(Integer.parseInt(splitAccount[0]), banco, splitAccount[2],
+                            tipo, Double.parseDouble(splitAccount[4]));
+                    if (split[0].equals(splitAccount[5])) {
+                        cuentas.add(cuenta);
+                    }
+                }
+                usuario.setCuentasBancarias(cuentas);
+                LinkedList<Usuario> usuarios = wallet.getUsuarios();
+                usuarios.add(usuario);
+            }
+            return wallet.getUsuarios();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        return wallet.getUsuarios();
+        return new LinkedList<>();
     }
 
     public void guardarUsuarios(LinkedList<Usuario> usuarios) throws IOException {
@@ -235,12 +251,12 @@ public class Persistencia {
 
         //para serializar las copias en XML
         //usuarios
-        XMLEncoder codificadorUsuarios = new XMLEncoder(new FileOutputStream(rutaUsuarioXML, false));
+        XMLEncoder codificadorUsuarios = new XMLEncoder(new FileOutputStream(rutaUsuarioXML, true));
         codificadorUsuarios.writeObject(listaUsuarios);
         codificadorUsuarios.close();
         System.err.println("Copia XML de usuarios creada");
         //transacciones
-        XMLEncoder codificadorTransacciones = new XMLEncoder(new FileOutputStream(rutaTransaccionXML, false));
+        XMLEncoder codificadorTransacciones = new XMLEncoder(new FileOutputStream(rutaTransaccionXML, true));
         codificadorTransacciones.writeObject(listaTransacciones);
         codificadorTransacciones.close();
         System.err.println("Copia XML de transacciones creada");
@@ -258,7 +274,7 @@ public class Persistencia {
                 }
             }
 
-            XMLEncoder codificadorCuentas = new XMLEncoder(new FileOutputStream(rutaCuentasXML, false));
+            XMLEncoder codificadorCuentas = new XMLEncoder(new FileOutputStream(rutaCuentasXML, true));
             codificadorCuentas.writeObject(todasLasCuentas);
             codificadorCuentas.close();
             System.err.println("Copia XML de cuentas creada");
@@ -270,15 +286,15 @@ public class Persistencia {
         //para guardar copias en binario
         //usuarios
         ObjectOutputStream salida;
-        salida = new ObjectOutputStream(new FileOutputStream(rutaUsuarioBIN));
+        salida = new ObjectOutputStream(new FileOutputStream(rutaUsuarioBIN, true));
         salida.writeObject(listaUsuarios);
         System.err.println("Copia BIN de usuarios creada");
         //transacciones
-        salida = new ObjectOutputStream(new FileOutputStream(rutaTransaccionBIN));
+        salida = new ObjectOutputStream(new FileOutputStream(rutaTransaccionBIN, true));
         salida.writeObject(listaTransacciones);
         System.err.println("Copia BIN de transacciones creada");
         //cuentas
-        salida = new ObjectOutputStream(new FileOutputStream(rutaCuentasBIN));
+        salida = new ObjectOutputStream(new FileOutputStream(rutaCuentasBIN, true));
         try {
             for (Usuario usuario : listaUsuarios) {
                 for (Cuenta cuenta : usuario.getCuentasBancarias()) {

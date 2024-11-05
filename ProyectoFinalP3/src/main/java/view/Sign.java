@@ -78,7 +78,6 @@ public class Sign extends javax.swing.JFrame {
         botonFinalizar = new javax.swing.JPanel();
         jbFinalizar = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -409,7 +408,6 @@ public class Sign extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Sign.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         this.dispose();
     }//GEN-LAST:event_jbFinalizarMouseClicked
 
