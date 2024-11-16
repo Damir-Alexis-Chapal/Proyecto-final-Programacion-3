@@ -132,6 +132,8 @@ public class Sistema extends javax.swing.JFrame {
         jbFinalizar = new javax.swing.JLabel();
         botonAgregarCuenta = new javax.swing.JPanel();
         agregarCuenta = new javax.swing.JLabel();
+        btnAdministrarCuentas = new javax.swing.JPanel();
+        administrarCuentas = new javax.swing.JLabel();
         panelEnvios = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         txtTipoTransaccion = new javax.swing.JTextField();
@@ -728,7 +730,7 @@ public class Sistema extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel5.setText("CORREO ELECTRONICO");
+        jLabel5.setText("CORREO");
 
         txtCorreo.setEditable(false);
         txtCorreo.setBackground(new java.awt.Color(255, 255, 255));
@@ -895,6 +897,36 @@ public class Sistema extends javax.swing.JFrame {
             .addComponent(agregarCuenta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
+        btnAdministrarCuentas.setBackground(new java.awt.Color(70, 130, 180));
+
+        administrarCuentas.setBackground(new java.awt.Color(70, 130, 180));
+        administrarCuentas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        administrarCuentas.setForeground(new java.awt.Color(255, 255, 255));
+        administrarCuentas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        administrarCuentas.setText("ADMINISTRAR CUENTAS");
+        administrarCuentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                administrarCuentasMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                administrarCuentasMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                administrarCuentasMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnAdministrarCuentasLayout = new javax.swing.GroupLayout(btnAdministrarCuentas);
+        btnAdministrarCuentas.setLayout(btnAdministrarCuentasLayout);
+        btnAdministrarCuentasLayout.setHorizontalGroup(
+            btnAdministrarCuentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(administrarCuentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+        );
+        btnAdministrarCuentasLayout.setVerticalGroup(
+            btnAdministrarCuentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(administrarCuentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panelUsuarioLayout = new javax.swing.GroupLayout(panelUsuario);
         panelUsuario.setLayout(panelUsuarioLayout);
         panelUsuarioLayout.setHorizontalGroup(
@@ -903,6 +935,8 @@ public class Sistema extends javax.swing.JFrame {
                 .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelUsuarioLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdministrarCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
                         .addComponent(botonAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelUsuarioLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
@@ -954,7 +988,9 @@ public class Sistema extends javax.swing.JFrame {
                 .addGap(8, 8, 8)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botonAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonAgregarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdministrarCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(99, Short.MAX_VALUE))
         );
 
@@ -1289,40 +1325,43 @@ public class Sistema extends javax.swing.JFrame {
                 control.editarUsuario(usuario);
                 System.out.println("Datos modificados...!");
                 JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
-                this.dispose();
+                System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (jbNombreNuevoDato.getText().trim().equals("CORREO ELECTRONICO")) {
+        }
+        if (jbNombreNuevoDato.getText().trim().equals("CORREO")) {
             System.out.println("Modificando datos...");
             usuario.setCorreoElectronico(txtNuevoDato.getText());
             try {
                 control.editarUsuario(usuario);
                 System.out.println("Datos modificados...!");
                 JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
-                this.dispose();
+                System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (jbNombreNuevoDato.getText().trim().equals("TELEFONO")) {
+        }
+        if (jbNombreNuevoDato.getText().trim().equals("TELEFONO")) {
             System.out.println("Modificando datos...");
             usuario.setNumeroTelefono(txtNuevoDato.getText());
             try {
                 control.editarUsuario(usuario);
                 System.out.println("Datos modificados...!");
                 JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
-                this.dispose();
+                System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else if (jbNombreNuevoDato.getText().trim().equals("DIRECCION")) {
+        }
+        if (jbNombreNuevoDato.getText().trim().equals("DIRECCIÓN")) {
             System.out.println("Modificando datos...");
             usuario.setDireccion(txtNuevoDato.getText());
             try {
                 control.editarUsuario(usuario);
                 System.out.println("Datos modificados...!");
                 JOptionPane.showMessageDialog(null, "DATOS MODIFICADOS CORRECTAMENTE\n INICIE SESIÓN NUEVAMENTE");
-                this.dispose();
+                System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1367,9 +1406,9 @@ public class Sistema extends javax.swing.JFrame {
     private void jbBotonMovimientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbBotonMovimientosMouseClicked
         String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
         DefaultTableModel mt = new DefaultTableModel(columnas, 0);
-        
-        if(wallet.getTransacccion().size()==0){
-            JOptionPane.showMessageDialog(null,"Aún no has hecho ninguna transacción");
+
+        if (wallet.getTransacccion().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
         }
         for (Transaccion transaccion : wallet.getTransacccion()) {
             System.err.println(transaccion.toString());
@@ -1593,6 +1632,55 @@ public class Sistema extends javax.swing.JFrame {
         botonAgregarCuenta.setBackground(new Color(70, 130, 180));
     }//GEN-LAST:event_agregarCuentaMouseExited
 
+    private void administrarCuentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_administrarCuentasMouseClicked
+        int op = Integer.parseInt(JOptionPane.showInputDialog(null, "----ADMINISTRAR CUENTAS----\n1.VER CUENTAS ENLAZADAS\n2.ELIMINAR CUENTA"));
+        switch (op) {
+            case 1:
+                StringBuilder sb = new StringBuilder();
+                for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                    sb.append(cuenta.toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, sb.toString());
+                break;
+
+            case 2:
+                String numC = JOptionPane.showInputDialog(null, "POR FAVOR INGRESE EL NUMERO DE CUENTA\n");
+                int index = -1;
+                for (int i = 0; i < usuarioPrueba.getCuentasBancarias().size(); i++) {
+                    if (usuarioPrueba.getCuentasBancarias().get(i).getNumeroCuenta().equals(numC)) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    LinkedList<Cuenta> cc = usuarioPrueba.getCuentasBancarias();
+                    cc.remove(index);
+                    usuarioPrueba.setCuentasBancarias(cc);
+                    double saldoT = usuarioPrueba.calcularSaldoT(cc);
+                    usuarioPrueba.setSaldoTotal(saldoT);
+                    try {
+                        wallet.editarUsuario(usuarioPrueba.getIdUsuario(), usuarioPrueba);
+                        JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente!");
+                        System.exit(0);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null,"Cuenta no encontrada");
+                }
+
+        }
+
+    }//GEN-LAST:event_administrarCuentasMouseClicked
+
+    private void administrarCuentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_administrarCuentasMouseEntered
+        btnAdministrarCuentas.setBackground(new Color(78, 123, 160));
+    }//GEN-LAST:event_administrarCuentasMouseEntered
+
+    private void administrarCuentasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_administrarCuentasMouseExited
+        btnAdministrarCuentas.setBackground(new Color(70, 130, 180));
+    }//GEN-LAST:event_administrarCuentasMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -1630,6 +1718,7 @@ public class Sistema extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel administrarCuentas;
     private javax.swing.JLabel agregarCuenta;
     private javax.swing.JPanel botonAgregarCuenta;
     private javax.swing.JPanel botonCuenta;
@@ -1641,6 +1730,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel botonMovimientos;
     private javax.swing.JPanel botonRetiros;
     private javax.swing.JPanel botonServicios;
+    private javax.swing.JPanel btnAdministrarCuentas;
     private javax.swing.JLabel btnRetiros;
     private javax.swing.JLabel finalizarEnvio;
     public static javax.swing.JTable historial;

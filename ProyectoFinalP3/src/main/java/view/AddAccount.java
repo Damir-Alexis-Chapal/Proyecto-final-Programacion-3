@@ -209,7 +209,7 @@ public class AddAccount extends javax.swing.JFrame {
         Wallet wallet = Wallet.obtenerInstancia();
         Sistema sistema = Sistema.obtenerInstancia();
         Usuario usuario = sistema.usuarioPrueba;
-        LinkedList<Cuenta> cuentasBancarias = sistema.usuarioPrueba.getCuentasBancarias();
+        LinkedList<Cuenta> cuentasBancarias = usuario.getCuentasBancarias();
         String banco = String.valueOf(jcBanco11.getSelectedItem());
         String numeroCuenta = txtNumeroDeCuenta11.getText();
         String tipoCuenta = String.valueOf(jcTipoCuenta11.getSelectedItem());
@@ -250,6 +250,8 @@ public class AddAccount extends javax.swing.JFrame {
         //aqui se finaliza creando la cuenta bancaria y agregandola a la lista de cuentas del usuario
         Cuenta cuenta = new Cuenta(idCuenta, bancoN, numeroCuenta, tipo, saldo);
         cuentasBancarias.add(cuenta);
+        double saldoTotal = sistema.usuarioPrueba.calcularSaldoT(cuentasBancarias);
+        usuario.setSaldoTotal(saldoTotal);
         try {
             wallet.editarUsuario(usuario.getIdUsuario(), usuario);
             JOptionPane.showMessageDialog(null, "Cuenta agregada exitosamente" + "\npor favor inicia sesión nuevamente!");

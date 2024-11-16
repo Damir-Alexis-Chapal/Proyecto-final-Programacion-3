@@ -45,7 +45,7 @@ public class SystemController {
 
     public void editarUsuario(Usuario usuario) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
-        int idUsuario = usuario.getIdUsuario() - 1;
+        int idUsuario = usuario.getIdUsuario();
         wallet.editarUsuario(idUsuario, usuario);
         ArchivoUtil.guardarRegistroLog("Se editó perfil del usuario: " + usuario.getNombreCompleto(), 1, "editar nombre usuario");
 

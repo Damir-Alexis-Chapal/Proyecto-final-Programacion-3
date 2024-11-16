@@ -117,4 +117,12 @@ public class Usuario implements Serializable {
                 + "\nSaldo Total: " + String.format("%.2f", saldoTotal)
                 + "\nCuentas Bancarias: " + cuentasBancarias;
     }
+    
+    public double calcularSaldoT(LinkedList<Cuenta> cuentasBancarias){
+        double saldoTotal = 0;
+        for (Cuenta ac : cuentasBancarias) {
+            saldoTotal += ac.getSaldo();
+        }
+        return saldoTotal;
+    }
 }

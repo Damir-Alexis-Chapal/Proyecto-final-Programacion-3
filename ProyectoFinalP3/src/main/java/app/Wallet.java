@@ -89,6 +89,7 @@ public class Wallet implements Serializable {
                 usuario = listaUsuarios.get(i);
             }
         }
+        System.err.println("Usuario encontrado, retornando...");
         return usuario;
     }
 
