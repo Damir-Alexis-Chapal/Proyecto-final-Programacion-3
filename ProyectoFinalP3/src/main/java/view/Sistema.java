@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Cuenta;
 import model.TipoTransaccion;
 import model.Transaccion;
@@ -107,6 +108,8 @@ public class Sistema extends javax.swing.JFrame {
         botonEnvios = new javax.swing.JPanel();
         jbEnvios = new javax.swing.JLabel();
         panelMovimientos = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        historial = new javax.swing.JTable();
         panelUsuario = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -671,15 +674,30 @@ public class Sistema extends javax.swing.JFrame {
         panelMovimientos.setBackground(new java.awt.Color(255, 255, 255));
         panelMovimientos.setMinimumSize(new java.awt.Dimension(800, 450));
 
+        historial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(historial);
+
         javax.swing.GroupLayout panelMovimientosLayout = new javax.swing.GroupLayout(panelMovimientos);
         panelMovimientos.setLayout(panelMovimientosLayout);
         panelMovimientosLayout.setHorizontalGroup(
             panelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
         );
         panelMovimientosLayout.setVerticalGroup(
             panelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(panelMovimientosLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 21, Short.MAX_VALUE))
         );
 
         tabbedSystem.addTab("tab3", panelMovimientos);
@@ -1347,6 +1365,31 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jbBotonMovimientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbBotonMovimientosMouseClicked
+        String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
+        DefaultTableModel mt = new DefaultTableModel(columnas, 0);
+        
+        if(wallet.getTransacccion().size()==0){
+            JOptionPane.showMessageDialog(null,"Aún no has hecho ninguna transacción");
+        }
+        for (Transaccion transaccion : wallet.getTransacccion()) {
+            System.err.println(transaccion.toString());
+            for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
+                    Object[] fila = {
+                        transaccion.getTipoTransaccion(),
+                        transaccion.getIdTransaccion(),
+                        transaccion.getFecha(),
+                        transaccion.getMonto(),
+                        transaccion.getCuentaOrigen(),
+                        transaccion.getCuentaDestino(),
+                        transaccion.getDescripcion()
+                    };
+                    mt.addRow(fila);
+                }
+            }
+
+        }
+        historial.setModel(mt);
         tabbedSystem.setSelectedIndex(2);
     }//GEN-LAST:event_jbBotonMovimientosMouseClicked
 
@@ -1484,7 +1527,7 @@ public class Sistema extends javax.swing.JFrame {
                 transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
                 try {
                     control.guardarTransaccion(transaccion);
-                    JOptionPane.showMessageDialog(null, "Transacción exitosa, inicie sesión nuevamente!\n" + transaccion.toString());
+                    JOptionPane.showMessageDialog(null, "Transacción exitosa!\ninicie sesión nuevamente!\n" + transaccion.toString());
                     System.exit(0);
 
                 } catch (IOException ex) {
@@ -1600,6 +1643,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel botonServicios;
     private javax.swing.JLabel btnRetiros;
     private javax.swing.JLabel finalizarEnvio;
+    public static javax.swing.JTable historial;
     private javax.swing.JLabel jButtonHome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1625,6 +1669,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
