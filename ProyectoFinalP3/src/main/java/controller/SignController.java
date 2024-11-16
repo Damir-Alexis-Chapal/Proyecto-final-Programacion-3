@@ -13,6 +13,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import javax.swing.JOptionPane;
 
 import model.Usuario;
 import utils.ArchivoUtil;
@@ -26,11 +27,9 @@ public class SignController {
 
     private static final SignController instancia = new SignController();
     private static final Logger logger = Logger.getLogger(SignController.class.getName());
-   
 
     private SignController() {
     }
-
 
     public static SignController obtenerInstancia() {
         return instancia;
@@ -40,9 +39,7 @@ public class SignController {
         Wallet wallet = Wallet.obtenerInstancia();
         wallet.agregarUsuario(usuario);
         logger.info("AVISO NUEVO USUARIO AGREGADO: " + usuario.mostrarInformacionUsuario());
-        System.out.println("Usuario agregado");
+        JOptionPane.showMessageDialog(null, "Usuario agregado");
     }
-    
-    
-}
 
+}

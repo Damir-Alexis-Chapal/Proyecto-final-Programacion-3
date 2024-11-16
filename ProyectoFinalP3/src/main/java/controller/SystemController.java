@@ -6,6 +6,7 @@ package controller;
 
 import app.Wallet;
 import java.io.IOException;
+import java.util.LinkedList;
 import model.Cuenta;
 import model.Transaccion;
 import model.Usuario;
@@ -46,7 +47,7 @@ public class SystemController {
         Wallet wallet = Wallet.obtenerInstancia();
         int idUsuario = usuario.getIdUsuario() - 1;
         wallet.editarUsuario(idUsuario, usuario);
-        ArchivoUtil.guardarRegistroLog("Se edito perfil del usuario: " + usuario.getNombreCompleto(), 1, "editar nombre usuario");
+        ArchivoUtil.guardarRegistroLog("Se editó perfil del usuario: " + usuario.getNombreCompleto(), 1, "editar nombre usuario");
 
     }
 
@@ -65,32 +66,35 @@ public class SystemController {
 
     public void guardarTransaccion(Transaccion transaccion) throws IOException {
         Wallet wallet = Wallet.obtenerInstancia();
-        Persistencia persistencia = Persistencia.obtenerInstancia();
+        LinkedList<Usuario> users= Wallet.getUsuarios();
+        
         wallet.agregarTransaccion(transaccion);
 
-        for (Usuario usuario : wallet.getUsuarios()) {
-            for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+        boolean actualizacionRealizadaUno = false;
+        boolean actualizacionRealizadaDos = false;
 
+        for (Usuario usuario : users) {
+            for (Cuenta cuenta : usuario.getCuentasBancarias()) {
                 if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
-                    double saldo = cuenta.getSaldo();
-                    cuenta.setSaldo(saldo + transaccion.getMonto());
-                    usuario.getCuentasBancarias().set(cuenta.getIdCuenta() - 1, cuenta);
+                    usuario.setSaldoTotal(usuario.getSaldoTotal()+ transaccion.getMonto());
+                    cuenta.setSaldo(cuenta.getSaldo() + transaccion.getMonto());
+                    actualizacionRealizadaUno = true;
                 }
                 if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
-                    double saldoDos = cuenta.getSaldo();
-                    cuenta.setSaldo(saldoDos - transaccion.getMonto());
-                    usuario.getCuentasBancarias().set(cuenta.getIdCuenta() - 1, cuenta);
+                    usuario.setSaldoTotal(usuario.getSaldoTotal()- transaccion.getMonto());
+                    cuenta.setSaldo(cuenta.getSaldo() - transaccion.getMonto());
+                    actualizacionRealizadaDos = true;
                 }
-
             }
-
-            wallet.editarUsuario(usuario.getIdUsuario(), usuario);
         }
-
-        persistencia.guardarUsuarios(wallet.getUsuarios());
-
-        System.err.println("Transacción exitosa!");
-        System.err.println(transaccion.toString());
+        // Guarda los cambios en persistencia si hubo alguna actualización
+        if (actualizacionRealizadaUno && actualizacionRealizadaDos) {
+            wallet.setUsuarios(users);
+            System.err.println("Transacción exitosa!");
+            System.err.println(transaccion.toString());
+        } else {
+            System.err.println("No se encontró ninguna cuenta para la transacción.");
+        }
     }
 
 }

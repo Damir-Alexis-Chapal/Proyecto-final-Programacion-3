@@ -6,6 +6,7 @@ package utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -50,27 +51,27 @@ public class ArchivoUtil {
         return contenido;
     }
 
-    public static void guardarRegistroLog(String mensajeLog, int nivel, String accion){
-        String rutaArchivo ="C:\\td\\persistencia\\log\\walletLog.txt";
+    public static void guardarRegistroLog(String mensajeLog, int nivel, String accion) {
+        String rutaArchivo = "C:\\td\\persistencia\\log\\walletLog.txt";
         Logger LOGGER = Logger.getLogger(accion);
-        FileHandler fileHandler =  null;
+        FileHandler fileHandler = null;
 
         try {
-            fileHandler = new FileHandler(rutaArchivo,true);
+            fileHandler = new FileHandler(rutaArchivo, true);
             fileHandler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(fileHandler);
 
             switch (nivel) {
                 case 1:
-                    LOGGER.log(Level.INFO,accion+","+mensajeLog) ;
+                    LOGGER.log(Level.INFO, accion + "," + mensajeLog);
                     break;
 
                 case 2:
-                    LOGGER.log(Level.WARNING,accion+","+mensajeLog) ;
+                    LOGGER.log(Level.WARNING, accion + "," + mensajeLog);
                     break;
 
                 case 3:
-                    LOGGER.log(Level.SEVERE,accion+","+mensajeLog) ;
+                    LOGGER.log(Level.SEVERE, accion + "," + mensajeLog);
                     break;
 
                 default:
@@ -79,20 +80,32 @@ public class ArchivoUtil {
 
         } catch (SecurityException e) {
 
-            LOGGER.log(Level.SEVERE,e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            LOGGER.log(Level.SEVERE,e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
             e.printStackTrace();
-        }
-        finally {
+        } finally {
 
             fileHandler.close();
         }
 
     }
 
+    public static void eliminarArchivo(String ruta) {
+        File archivo = new File(ruta);
 
+        // Verificar si el archivo existe antes de eliminarlo
+        if (archivo.exists()) {
+            if (archivo.delete()) {
+                System.out.println("El archivo se eliminó correctamente.");
+            } else {
+                System.out.println("No se pudo eliminar el archivo.");
+            }
+        } else {
+            System.out.println("El archivo no existe.");
+        }
+    }
 
 }

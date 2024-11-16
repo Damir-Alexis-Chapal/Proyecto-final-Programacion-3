@@ -1451,7 +1451,6 @@ public class Sistema extends javax.swing.JFrame {
         if (Double.parseDouble(txtCantidad.getText()) < usuarioPrueba.getSaldoTotal()) {
             Wallet wallet = Wallet.obtenerInstancia();
             boolean ban = false;
-
             for (Usuario usuario : wallet.getUsuarios()) {
                 for (Cuenta cuenta : usuario.getCuentasBancarias()) {
                     if (cuenta.getNumeroCuenta().equals(txtCuentaDestino.getText().trim())) {
@@ -1485,8 +1484,8 @@ public class Sistema extends javax.swing.JFrame {
                 transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
                 try {
                     control.guardarTransaccion(transaccion);
-                    JOptionPane.showMessageDialog(null, "Transacción exitosa!\n" + transaccion.toString());
-                    tabbedSystem.setSelectedIndex(0);
+                    JOptionPane.showMessageDialog(null, "Transacción exitosa, inicie sesión nuevamente!\n" + transaccion.toString());
+                    System.exit(0);
 
                 } catch (IOException ex) {
                     Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);

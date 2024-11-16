@@ -68,7 +68,7 @@ public class Cuenta implements Serializable{
         this.saldo = saldo;
     }
     
-    public Banco obtenerBanco(String banco){
+    public static Banco obtenerBanco(String banco){
         Banco bancoN = Banco.BANCO_ITAU;
         
         if (banco.equals("BANCO_NACIONAL")) {
@@ -84,7 +84,7 @@ public class Cuenta implements Serializable{
         }
         return bancoN;
     }
-    public TipoCuenta obtenerTipoCuenta(String tipoCuenta){
+    public static TipoCuenta obtenerTipoCuenta(String tipoCuenta){
         
         TipoCuenta tipo = TipoCuenta.AHORRO;
         

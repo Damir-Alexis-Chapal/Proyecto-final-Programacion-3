@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingConstants;
 import model.Cuenta;
 import model.Transaccion;
@@ -39,16 +41,24 @@ public class Wallet implements Serializable {
         Persistencia persistencia = Persistencia.obtenerInstancia();
 
         try {
-
             persistencia.cargarTransacciones(instancia);
-            System.err.println("Transacciones cargadas...");
-            persistencia.cargarUsuarios(instancia);
-            System.err.println("Usuarios cargados...");
-
-            persistencia.guardarCopias(listaUsuarios, listaTransacciones);
-
+//            System.err.println("Transacciones cargadas...");
         } catch (Exception e) {
+            System.err.println("No se pudieron cargar las transacciones");
+        }
 
+        try {
+            persistencia.cargarUsuarios(instancia);
+            //System.err.println("Usuarios cargados...");
+        } catch (Exception e) {
+            System.err.println("No se pudieron cargar los usuarios");
+        }
+
+        try {
+            persistencia.guardarCopias(listaUsuarios, listaTransacciones);
+            //System.err.println("Copias guardadas...");
+        } catch (Exception e) {
+            System.err.println("No se pudieron guardar las copias");
         }
 
         Login login = Login.obtenerInstancia();
@@ -56,7 +66,6 @@ public class Wallet implements Serializable {
     }
 
     public void agregarUsuario(Usuario usuario) throws IOException {
-
         listaUsuarios.add(usuario);
         Persistencia persistencia = Persistencia.obtenerInstancia();
         persistencia.guardarUsuarios(listaUsuarios);
@@ -83,7 +92,7 @@ public class Wallet implements Serializable {
         return usuario;
     }
 
-    public LinkedList<Usuario> getUsuarios() {
+    public static LinkedList<Usuario> getUsuarios() {
         return listaUsuarios;
     }
 
@@ -95,7 +104,7 @@ public class Wallet implements Serializable {
 
         int index = -1;
         for (int i = 0; i < listaUsuarios.size(); i++) {
-            if (listaUsuarios.get(i).getIdUsuario()== idUsuario) {
+            if (listaUsuarios.get(i).getIdUsuario() == idUsuario) {
                 index = i;
                 break;
             }
@@ -114,6 +123,30 @@ public class Wallet implements Serializable {
         Persistencia persistencia = Persistencia.obtenerInstancia();
         persistencia.guardarTransaccion(transaccion);
 
+    }
+
+    public int verificarCuenta(int idCuenta) {
+        int index = -1;
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            for (int j = 0; j < listaUsuarios.get(i).getCuentasBancarias().size(); j++) {
+                if (listaUsuarios.get(i).getCuentasBancarias().get(j).getIdCuenta() == idCuenta) {
+                    index = j;
+                    break;
+                }
+            }
+
+        }
+        return index;
+    }
+
+    public void setUsuarios(LinkedList<Usuario> users) {
+        listaUsuarios = users;
+        Persistencia persistencia = Persistencia.obtenerInstancia();
+        try {
+            persistencia.guardarUsuarios(listaUsuarios);
+        } catch (IOException ex) {
+            Logger.getLogger(Wallet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

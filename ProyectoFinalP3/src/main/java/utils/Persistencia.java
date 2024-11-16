@@ -146,7 +146,6 @@ public class Persistencia {
     }
 
     public LinkedList<Usuario> cargarUsuarios(Wallet wallet) throws IOException {
-
         try {
             rutaUsuario = obtenerRutaProperties("usuario");
             rutaCuentasBancarias = obtenerRutaProperties("cuenta");
@@ -165,35 +164,49 @@ public class Persistencia {
             TipoCuenta tipo = TipoCuenta.AHORRO;
             Banco banco = Banco.BANCO_ITAU;
 
+            // Limpiar la lista actual de usuarios para evitar duplicados
+            LinkedList<Usuario> usuarios = new LinkedList<>();
+            wallet.setUsuarios(usuarios);
+
             for (String txtUsuario : listaUsuarios) {
                 String[] split = txtUsuario.split("@@");
-                Usuario usuario = new Usuario(Integer.parseInt(split[0]), split[1], split[2], split[3], split[4],
-                        Double.parseDouble(split[5]));
+                Usuario usuario = new Usuario(
+                        Integer.parseInt(split[0]),
+                        split[1],
+                        split[2],
+                        split[3],
+                        split[4],
+                        Double.parseDouble(split[5])
+                );
 
                 LinkedList<Cuenta> cuentas = new LinkedList<>();
-
                 for (String account : listaCuentas) {
                     String[] splitAccount = account.split("@@");
-                    Cuenta cuenta = new Cuenta();
-                    banco = cuenta.obtenerBanco(splitAccount[1]);
-                    tipo = cuenta.obtenerTipoCuenta(splitAccount[3]);
+                    banco = Cuenta.obtenerBanco(splitAccount[1]);
+                    tipo = Cuenta.obtenerTipoCuenta(splitAccount[3]);
 
-                    cuenta = new Cuenta(Integer.parseInt(splitAccount[0]), banco, splitAccount[2],
-                            tipo, Double.parseDouble(splitAccount[4]));
                     if (split[0].equals(splitAccount[5])) {
+                        Cuenta cuenta = new Cuenta(
+                                Integer.parseInt(splitAccount[0]),
+                                banco,
+                                splitAccount[2],
+                                tipo,
+                                Double.parseDouble(splitAccount[4])
+                        );
                         cuentas.add(cuenta);
                     }
                 }
                 usuario.setCuentasBancarias(cuentas);
-                LinkedList<Usuario> usuarios = wallet.getUsuarios();
                 usuarios.add(usuario);
             }
-            return wallet.getUsuarios();
+
+            wallet.setUsuarios(usuarios);
+            return usuarios;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            return new LinkedList<>();
         }
-        return new LinkedList<>();
     }
 
     public void guardarUsuarios(LinkedList<Usuario> usuarios) throws IOException {
@@ -202,6 +215,7 @@ public class Persistencia {
 
         StringBuilder txtUsuario = new StringBuilder();
         StringBuilder txtCuenta = new StringBuilder();
+
         for (Usuario usuario : usuarios) {
             txtUsuario.append(usuario.getIdUsuario() + "@@");
             txtUsuario.append(usuario.getNombreCompleto() + "@@");
@@ -218,6 +232,13 @@ public class Persistencia {
                 txtCuenta.append(usuario.getIdUsuario() + "\n");
             }
         }
+        //elimino y vuelvo a guardar los archivos, porque?, porque por alguna extraña razón siempre se duplican los datos cuando intento modificar
+        //alguna cuenta o algún usuario, esto fue lo unico que se me ocurrió para arreglarlo jaja
+
+        //eliminar
+        ArchivoUtil.eliminarArchivo(rutaUsuario);
+        ArchivoUtil.eliminarArchivo(rutaCuentasBancarias);
+        //guardar ;v
         ArchivoUtil.guardarArchivo(rutaUsuario, txtUsuario.toString(), false);
         ArchivoUtil.guardarArchivo(rutaCuentasBancarias, txtCuenta.toString(), false);
         ArchivoUtil.guardarRegistroLog("Usuario guardado", 1, "guardarUsuario");
@@ -251,60 +272,81 @@ public class Persistencia {
 
         //para serializar las copias en XML
         //usuarios
-        XMLEncoder codificadorUsuarios = new XMLEncoder(new FileOutputStream(rutaUsuarioXML, true));
-        codificadorUsuarios.writeObject(listaUsuarios);
-        codificadorUsuarios.close();
-        System.err.println("Copia XML de usuarios creada");
-        //transacciones
-        XMLEncoder codificadorTransacciones = new XMLEncoder(new FileOutputStream(rutaTransaccionXML, true));
-        codificadorTransacciones.writeObject(listaTransacciones);
-        codificadorTransacciones.close();
-        System.err.println("Copia XML de transacciones creada");
+        if (listaUsuarios.size() != 0) {
+            XMLEncoder codificadorUsuarios = new XMLEncoder(new FileOutputStream(rutaUsuarioXML, false));
+            codificadorUsuarios.writeObject(listaUsuarios);
+            codificadorUsuarios.close();
+            System.err.println("Copia XML de usuarios creada");
 
-        //cuentas
-        //tuve que crear toda esta cosa solo para guardar las cuentas y solo porque me habia comido una letra al
-        //llamar al método obtener ruta, esta parte funcionaría aun sin el try pero la voy a dejar asi
-        try {
+            //cuentas
+            //tuve que crear toda esta cosa solo para guardar las cuentas y solo porque me habia comido una letra al
+            //llamar al método obtener ruta, esta parte funcionaría aun sin el try pero la voy a dejar asi
+            try {
 
-            LinkedList<Cuenta> todasLasCuentas = new LinkedList<>();
-            for (Usuario usuario : listaUsuarios) {
-                LinkedList<Cuenta> cuentas = usuario.getCuentasBancarias();
-                for (Cuenta cuenta : cuentas) {
-                    todasLasCuentas.add(cuenta);
+                LinkedList<Cuenta> todasLasCuentas = new LinkedList<>();
+                for (Usuario usuario : listaUsuarios) {
+                    LinkedList<Cuenta> cuentas = usuario.getCuentasBancarias();
+                    for (Cuenta cuenta : cuentas) {
+                        todasLasCuentas.add(cuenta);
+                    }
                 }
+
+                XMLEncoder codificadorCuentas = new XMLEncoder(new FileOutputStream(rutaCuentasXML, false));
+                codificadorCuentas.writeObject(todasLasCuentas);
+                codificadorCuentas.close();
+                System.err.println("Copia XML de cuentas creada");
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            XMLEncoder codificadorCuentas = new XMLEncoder(new FileOutputStream(rutaCuentasXML, true));
-            codificadorCuentas.writeObject(todasLasCuentas);
-            codificadorCuentas.close();
-            System.err.println("Copia XML de cuentas creada");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            System.err.println("Aun no hay usuarios, Copia XML omitida");
+            System.err.println("Aun no hay cuentas, Copia XML omitida");
+        }
+        //transacciones
+        if (listaTransacciones.size() != 0) {
+            XMLEncoder codificadorTransacciones = new XMLEncoder(new FileOutputStream(rutaTransaccionXML, false));
+            codificadorTransacciones.writeObject(listaTransacciones);
+            codificadorTransacciones.close();
+            System.err.println("Copia XML de transacciones creada");
+        } else {
+            System.err.println("Aun no hay transacciones, Copia XML omitida");
         }
 
         //para guardar copias en binario
         //usuarios
         ObjectOutputStream salida;
-        salida = new ObjectOutputStream(new FileOutputStream(rutaUsuarioBIN, true));
-        salida.writeObject(listaUsuarios);
-        System.err.println("Copia BIN de usuarios creada");
-        //transacciones
-        salida = new ObjectOutputStream(new FileOutputStream(rutaTransaccionBIN, true));
-        salida.writeObject(listaTransacciones);
-        System.err.println("Copia BIN de transacciones creada");
-        //cuentas
-        salida = new ObjectOutputStream(new FileOutputStream(rutaCuentasBIN, true));
-        try {
-            for (Usuario usuario : listaUsuarios) {
-                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
-                    salida.writeObject(cuenta);
+        if (listaUsuarios.size() != 0) {
+
+            salida = new ObjectOutputStream(new FileOutputStream(rutaUsuarioBIN, false));
+            salida.writeObject(listaUsuarios);
+            System.err.println("Copia BIN de usuarios creada");
+
+            //cuentas
+            salida = new ObjectOutputStream(new FileOutputStream(rutaCuentasBIN, false));
+            try {
+                for (Usuario usuario : listaUsuarios) {
+                    for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                        salida.writeObject(cuenta);
+                    }
                 }
+                System.err.println("Copia BIN de cuentas creada");
+                salida.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            System.err.println("Copia BIN de cuentas creada");
-            salida.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            System.err.println("Aun no hay usuarios, Copia BIN omitida");
+            System.err.println("Aun no hay cuentas, Copia BIN omitida");
+        }
+
+        //transacciones
+        if (listaTransacciones.size() != 0) {
+            salida = new ObjectOutputStream(new FileOutputStream(rutaTransaccionBIN, false));
+            salida.writeObject(listaTransacciones);
+            System.err.println("Copia BIN de transacciones creada");
+        } else {
+            System.err.println("Aun no hay transacciones, Copia BIN omitida");
         }
 
     }
