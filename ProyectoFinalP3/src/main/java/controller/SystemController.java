@@ -7,6 +7,7 @@ package controller;
 import app.Wallet;
 import java.io.IOException;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 import model.Cuenta;
 import model.Transaccion;
 import model.Usuario;
@@ -90,8 +91,9 @@ public class SystemController {
         // Guarda los cambios en persistencia si hubo alguna actualización
         if (actualizacionRealizadaUno && actualizacionRealizadaDos) {
             wallet.setUsuarios(users);
-            System.err.println("Transacción exitosa!");
-            System.err.println(transaccion.toString());
+            
+            System.err.println("transacción exitosa!\n"+transaccion.toString());
+            JOptionPane.showMessageDialog(null, "Transacción exitosa!\nInicie sesión nuevamente!\n" + transaccion.toString());
         } else {
             System.err.println("No se encontró ninguna cuenta para la transacción.");
         }

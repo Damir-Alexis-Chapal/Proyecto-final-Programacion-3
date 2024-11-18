@@ -1,5 +1,6 @@
 package app;
 
+import controller.WebSocketController;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Wallet implements Serializable {
     // Declaración de la lista de usuarios
     public static LinkedList<Usuario> listaUsuarios;
     public static LinkedList<Transaccion> listaTransacciones;
-
+    
     // Constructor privado
     private Wallet() {
         // Inicializamos la lista en el constructor
@@ -38,25 +39,25 @@ public class Wallet implements Serializable {
     }
 
     public static void main(String[] args) {
+        
         Persistencia persistencia = Persistencia.obtenerInstancia();
 
         try {
             persistencia.cargarTransacciones(instancia);
-//            System.err.println("Transacciones cargadas...");
         } catch (Exception e) {
             System.err.println("No se pudieron cargar las transacciones");
         }
 
         try {
             persistencia.cargarUsuarios(instancia);
-            //System.err.println("Usuarios cargados...");
+          
         } catch (Exception e) {
             System.err.println("No se pudieron cargar los usuarios");
         }
 
         try {
             persistencia.guardarCopias(listaUsuarios, listaTransacciones);
-            //System.err.println("Copias guardadas...");
+           
         } catch (Exception e) {
             System.err.println("No se pudieron guardar las copias");
         }

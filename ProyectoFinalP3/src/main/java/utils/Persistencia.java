@@ -236,8 +236,8 @@ public class Persistencia {
         //alguna cuenta o algún usuario, esto fue lo unico que se me ocurrió para arreglarlo jaja
 
         //eliminar
-        ArchivoUtil.eliminarArchivo(rutaUsuario);
-        ArchivoUtil.eliminarArchivo(rutaCuentasBancarias);
+//        ArchivoUtil.eliminarArchivo(rutaUsuario);
+//        ArchivoUtil.eliminarArchivo(rutaCuentasBancarias);
         //guardar ;v
         ArchivoUtil.guardarArchivo(rutaUsuario, txtUsuario.toString(), false);
         ArchivoUtil.guardarArchivo(rutaCuentasBancarias, txtCuenta.toString(), false);

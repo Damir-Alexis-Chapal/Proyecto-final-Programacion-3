@@ -57,6 +57,8 @@ public class AddAccount extends javax.swing.JFrame {
         botonFinalizar = new javax.swing.JPanel();
         jbFinalizar = new javax.swing.JLabel();
 
+        setResizable(false);
+
         jPanel12.setBackground(new java.awt.Color(70, 130, 180));
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CUENTA BANCARIA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 

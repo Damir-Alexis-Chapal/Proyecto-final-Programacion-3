@@ -6,6 +6,7 @@ package view;
 
 import app.Wallet;
 import controller.SystemController;
+import controller.WebSocketController;
 import java.awt.Color;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -676,6 +677,7 @@ public class Sistema extends javax.swing.JFrame {
         panelMovimientos.setBackground(new java.awt.Color(255, 255, 255));
         panelMovimientos.setMinimumSize(new java.awt.Dimension(800, 450));
 
+        historial.setAutoCreateRowSorter(true);
         historial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -1411,9 +1413,9 @@ public class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
         }
         for (Transaccion transaccion : wallet.getTransacccion()) {
-            System.err.println(transaccion.toString());
+//            System.err.println(transaccion.toString());
             for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
-                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())||cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
                     Object[] fila = {
                         transaccion.getTipoTransaccion(),
                         transaccion.getIdTransaccion(),
@@ -1476,6 +1478,7 @@ public class Sistema extends javax.swing.JFrame {
         Wallet wallet = Wallet.obtenerInstancia();
         int idTransferencia = 0;
         txtTipoTransaccion.setText("TRANSFERENCIA");
+
         if (wallet.listaTransacciones == null) {
 
             txtNumeroTransaccion.setText(String.valueOf(idTransferencia + 1));
@@ -1487,7 +1490,8 @@ public class Sistema extends javax.swing.JFrame {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String fechaFormateada = fecha.format(formato);
         txtFecha.setText(fechaFormateada.toString());
-        txtCuentaOrigen.setText(txtNumeroCuenta.getText());
+        JOptionPane.showMessageDialog(null, "Asegurese de seleccionar la cuenta con la que desea enviar su dinero\n [HAGALO EN EL RECUADRO DE CUENTAS DISPONIBLES!]");
+        txtCuentaOrigen.setText(jcCuentasBancarias.getSelectedItem().toString());
 
         tabbedSystem.setSelectedIndex(4);
 
@@ -1564,14 +1568,15 @@ public class Sistema extends javax.swing.JFrame {
                 transaccion.setMonto(monto);
                 transaccion.setTipoTransaccion(tipo);
                 transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
-                try {
-                    control.guardarTransaccion(transaccion);
-                    JOptionPane.showMessageDialog(null, "Transacción exitosa!\ninicie sesión nuevamente!\n" + transaccion.toString());
-                    System.exit(0);
-
-                } catch (IOException ex) {
-                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+                    WebSocketController wsc = new WebSocketController();
+                    wsc.conectarServiciosWebSocket(transaccion);
+//                    control.guardarTransaccion(transaccion);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                JOptionPane.showMessageDialog(null, "Transacción exitosa!\ninicie sesión nuevamente!\n" + transaccion.toString());
+                System.exit(0);
             } else {
                 JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
             }
@@ -1633,43 +1638,48 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarCuentaMouseExited
 
     private void administrarCuentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_administrarCuentasMouseClicked
-        int op = Integer.parseInt(JOptionPane.showInputDialog(null, "----ADMINISTRAR CUENTAS----\n1.VER CUENTAS ENLAZADAS\n2.ELIMINAR CUENTA"));
-        switch (op) {
-            case 1:
-                StringBuilder sb = new StringBuilder();
-                for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
-                    sb.append(cuenta.toString()).append("\n");
-                }
-                JOptionPane.showMessageDialog(null, sb.toString());
-                break;
-
-            case 2:
-                String numC = JOptionPane.showInputDialog(null, "POR FAVOR INGRESE EL NUMERO DE CUENTA\n");
-                int index = -1;
-                for (int i = 0; i < usuarioPrueba.getCuentasBancarias().size(); i++) {
-                    if (usuarioPrueba.getCuentasBancarias().get(i).getNumeroCuenta().equals(numC)) {
-                        index = i;
-                        break;
+        try {
+            int op = Integer.parseInt(JOptionPane.showInputDialog(null, "----ADMINISTRAR CUENTAS----\n1.VER CUENTAS ENLAZADAS\n2.DESENLAZAR CUENTA"));
+            switch (op) {
+                case 1:
+                    StringBuilder sb = new StringBuilder();
+                    for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                        sb.append(cuenta.toString()).append("\n");
                     }
-                }
-                if (index != -1) {
-                    LinkedList<Cuenta> cc = usuarioPrueba.getCuentasBancarias();
-                    cc.remove(index);
-                    usuarioPrueba.setCuentasBancarias(cc);
-                    double saldoT = usuarioPrueba.calcularSaldoT(cc);
-                    usuarioPrueba.setSaldoTotal(saldoT);
-                    try {
-                        wallet.editarUsuario(usuarioPrueba.getIdUsuario(), usuarioPrueba);
-                        JOptionPane.showMessageDialog(null, "Cuenta eliminada correctamente!");
-                        System.exit(0);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null,"Cuenta no encontrada");
-                }
+                    JOptionPane.showMessageDialog(null, sb.toString());
+                    break;
 
+                case 2:
+                    String numC = JOptionPane.showInputDialog(null, "POR FAVOR INGRESE EL NUMERO DE CUENTA\n");
+                    int index = -1;
+                    for (int i = 0; i < usuarioPrueba.getCuentasBancarias().size(); i++) {
+                        if (usuarioPrueba.getCuentasBancarias().get(i).getNumeroCuenta().equals(numC)) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index != -1) {
+                        LinkedList<Cuenta> cc = usuarioPrueba.getCuentasBancarias();
+                        cc.remove(index);
+                        usuarioPrueba.setCuentasBancarias(cc);
+                        double saldoT = usuarioPrueba.calcularSaldoT(cc);
+                        usuarioPrueba.setSaldoTotal(saldoT);
+                        try {
+                            wallet.editarUsuario(usuarioPrueba.getIdUsuario(), usuarioPrueba);
+                            JOptionPane.showMessageDialog(null, "Cuenta desenlazada correctamente!");
+                            System.exit(0);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cuenta no encontrada");
+                    }
+
+            }
+        } catch (Exception e) {
+            System.err.println("Dato no reconocido...");
         }
+
 
     }//GEN-LAST:event_administrarCuentasMouseClicked
 

@@ -7,6 +7,7 @@ package view;
 import app.Wallet;
 import controller.LoginController;
 import controller.SystemController;
+import controller.WebSocketController;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -261,14 +262,6 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioMouseClicked
 
     private void txtUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUsuarioMousePressed
-//        if (txtUsuario.getText().equals("Ingrese su nombre de usuario")) {
-//            txtUsuario.setText("");
-//            txtUsuario.setForeground(Color.BLACK);
-//        }
-//        if (String.valueOf(txtCorreo.getText()).equals("")) {
-//            txtCorreo.setText("Ingrese su correo electronico");
-//            txtCorreo.setForeground(new Color(204, 204, 204));
-//        }
 
     }//GEN-LAST:event_txtUsuarioMousePressed
 
@@ -291,7 +284,13 @@ public class Login extends javax.swing.JFrame {
             ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder" + " Usuario: " + txtUsuario.getText() + " " + txtCorreo.getText(), 1, "ingresar/correcto");
             JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
             sistema.setVisible(true);
-            
+            try {
+                WebSocketController wsc = new WebSocketController();
+                wsc.iniciarServidor();
+            } catch (Exception e) {
+
+            }
+
         } else {
             ArchivoUtil.guardarRegistroLog("datos incorrectos al intentar acceder", 2, "ingresar/incorrecto");
             JOptionPane.showMessageDialog(null, "DATOS INCORRECTOS");
