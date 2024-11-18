@@ -75,27 +75,63 @@ public class Consumidor implements Runnable {
     }
 
     public static void procesarMensaje(Transaccion trs) {
-        boolean ban = false;
-        for (Usuario usuario : wallet.getUsuarios()) {
-            for (Cuenta cuenta : usuario.getCuentasBancarias()) {
-                if (cuenta.getNumeroCuenta().equals(trs.getCuentaDestino())) {
-                    ban = true;
-                    break;
+        if (trs.getTipoTransaccion().name().equals("TRANSFERENCIA") || trs.getTipoTransaccion().name().equals("DEPOSITO")) {
+            boolean ban = false;
+            for (Usuario usuario : wallet.getUsuarios()) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(trs.getCuentaDestino())) {
+                        ban = true;
+                        break;
+                    }
                 }
             }
+            if (ban) {
+                SystemController control = SystemController.obtenerInstancia();
+                try {
+                    control.guardarTransaccion(trs);
+
+                    System.exit(0);
+                } catch (IOException ex) {
+                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
+            }
         }
-        if (ban) {
+        if (trs.getTipoTransaccion().name().equals("RETIRO")) {
+
             SystemController control = SystemController.obtenerInstancia();
             try {
                 control.guardarTransaccion(trs);
-                
-
                 System.exit(0);
             } catch (IOException ex) {
                 Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
+
         }
+        if (trs.getTipoTransaccion().name().equals("DEPOSITO")) {
+            boolean ban = false;
+            for (Usuario usuario : wallet.getUsuarios()) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(trs.getCuentaDestino())) {
+                        ban = true;
+                        break;
+                    }
+                }
+            }
+            if (ban) {
+                SystemController control = SystemController.obtenerInstancia();
+                try {
+                    control.guardarTransaccion(trs);
+
+                    System.exit(0);
+                } catch (IOException ex) {
+                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
+            }
+        }
+
     }
 }

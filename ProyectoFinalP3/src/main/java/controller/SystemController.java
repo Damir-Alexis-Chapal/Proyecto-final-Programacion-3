@@ -66,36 +66,64 @@ public class SystemController {
     }
 
     public void guardarTransaccion(Transaccion transaccion) throws IOException {
-        Wallet wallet = Wallet.obtenerInstancia();
-        LinkedList<Usuario> users= Wallet.getUsuarios();
-        
-        wallet.agregarTransaccion(transaccion);
+        if (transaccion.getTipoTransaccion().name().equals("TRANSFERENCIA") || transaccion.getTipoTransaccion().name().equals("DEPOSITO")) {
+            Wallet wallet = Wallet.obtenerInstancia();
+            LinkedList<Usuario> users = Wallet.getUsuarios();
 
-        boolean actualizacionRealizadaUno = false;
-        boolean actualizacionRealizadaDos = false;
+            wallet.agregarTransaccion(transaccion);
 
-        for (Usuario usuario : users) {
-            for (Cuenta cuenta : usuario.getCuentasBancarias()) {
-                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
-                    usuario.setSaldoTotal(usuario.getSaldoTotal()+ transaccion.getMonto());
-                    cuenta.setSaldo(cuenta.getSaldo() + transaccion.getMonto());
-                    actualizacionRealizadaUno = true;
-                }
-                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
-                    usuario.setSaldoTotal(usuario.getSaldoTotal()- transaccion.getMonto());
-                    cuenta.setSaldo(cuenta.getSaldo() - transaccion.getMonto());
-                    actualizacionRealizadaDos = true;
+            boolean actualizacionRealizadaUno = false;
+            boolean actualizacionRealizadaDos = false;
+
+            for (Usuario usuario : users) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                        usuario.setSaldoTotal(usuario.getSaldoTotal() + transaccion.getMonto());
+                        cuenta.setSaldo(cuenta.getSaldo() + transaccion.getMonto());
+                        actualizacionRealizadaUno = true;
+                    }
+                    if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
+                        usuario.setSaldoTotal(usuario.getSaldoTotal() - transaccion.getMonto());
+                        cuenta.setSaldo(cuenta.getSaldo() - transaccion.getMonto());
+                        actualizacionRealizadaDos = true;
+                    }
                 }
             }
+            // Guarda los cambios en persistencia si hubo alguna actualización
+            if (actualizacionRealizadaUno && actualizacionRealizadaDos) {
+                wallet.setUsuarios(users);
+
+                System.err.println("transacción exitosa!\n" + transaccion.toString());
+                JOptionPane.showMessageDialog(null, "Transacción exitosa!\nInicie sesión nuevamente!\n" + transaccion.toString());
+            } else {
+                System.err.println("No se encontró ninguna cuenta para la transacción.");
+            }
         }
-        // Guarda los cambios en persistencia si hubo alguna actualización
-        if (actualizacionRealizadaUno && actualizacionRealizadaDos) {
-            wallet.setUsuarios(users);
-            
-            System.err.println("transacción exitosa!\n"+transaccion.toString());
-            JOptionPane.showMessageDialog(null, "Transacción exitosa!\nInicie sesión nuevamente!\n" + transaccion.toString());
-        } else {
-            System.err.println("No se encontró ninguna cuenta para la transacción.");
+        if (transaccion.getTipoTransaccion().name().equals("RETIRO")) {
+            Wallet wallet = Wallet.obtenerInstancia();
+            LinkedList<Usuario> users = Wallet.getUsuarios();
+
+            wallet.agregarTransaccion(transaccion);
+            boolean actualizacionRealizadaDos = false;
+
+            for (Usuario usuario : users) {
+                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                    if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())) {
+                        usuario.setSaldoTotal(usuario.getSaldoTotal() - transaccion.getMonto());
+                        cuenta.setSaldo(cuenta.getSaldo() - transaccion.getMonto());
+                        actualizacionRealizadaDos = true;
+                    }
+                }
+            }
+            // Guarda los cambios en persistencia si hubo alguna actualización
+            if (actualizacionRealizadaDos) {
+                wallet.setUsuarios(users);
+
+                System.err.println("transacción exitosa!\n" + transaccion.toString());
+                JOptionPane.showMessageDialog(null, "Transacción exitosa!\nInicie sesión nuevamente!\n" + transaccion.toString());
+            } else {
+                System.err.println("No se encontró ninguna cuenta para la transacción.");
+            }
         }
     }
 

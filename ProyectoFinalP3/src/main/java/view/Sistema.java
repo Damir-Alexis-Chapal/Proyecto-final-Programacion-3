@@ -4,6 +4,7 @@
  */
 package view;
 
+import Exception.CuentaNoExistenteException;
 import app.Wallet;
 import controller.SystemController;
 import controller.WebSocketController;
@@ -85,7 +86,6 @@ public class Sistema extends javax.swing.JFrame {
         jbNombreUsuario = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jbSaldoDisponible = new javax.swing.JLabel();
-        tipoCuentaEnUso = new javax.swing.JTextField();
         panelServicios = new javax.swing.JPanel();
         jcCuentasBancarias = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
@@ -108,6 +108,7 @@ public class Sistema extends javax.swing.JFrame {
         jbDepositos = new javax.swing.JLabel();
         botonEnvios = new javax.swing.JPanel();
         jbEnvios = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
         panelMovimientos = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         historial = new javax.swing.JTable();
@@ -376,10 +377,6 @@ public class Sistema extends javax.swing.JFrame {
         jbSaldoDisponible.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jbSaldoDisponible.setText("$234,568,500.00");
 
-        tipoCuentaEnUso.setEditable(false);
-        tipoCuentaEnUso.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        tipoCuentaEnUso.setText("CUENTA DE AHORROS");
-
         javax.swing.GroupLayout panelHomeLayout = new javax.swing.GroupLayout(panelHome);
         panelHome.setLayout(panelHomeLayout);
         panelHomeLayout.setHorizontalGroup(
@@ -394,10 +391,7 @@ public class Sistema extends javax.swing.JFrame {
                         .addComponent(jbSaldoDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelHomeLayout.createSequentialGroup()
                         .addGap(330, 330, 330)
-                        .addComponent(jLabel6))
-                    .addGroup(panelHomeLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(tipoCuentaEnUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel6)))
                 .addContainerGap(310, Short.MAX_VALUE))
         );
         panelHomeLayout.setVerticalGroup(
@@ -405,9 +399,7 @@ public class Sistema extends javax.swing.JFrame {
             .addGroup(panelHomeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jbNombreUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tipoCuentaEnUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
+                .addGap(49, 49, 49)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbSaldoDisponible)
@@ -632,6 +624,13 @@ public class Sistema extends javax.swing.JFrame {
             .addComponent(jbEnvios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
+        btnRefrescar.setText("RF");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelServiciosLayout = new javax.swing.GroupLayout(panelServicios);
         panelServicios.setLayout(panelServiciosLayout);
         panelServiciosLayout.setHorizontalGroup(
@@ -639,11 +638,14 @@ public class Sistema extends javax.swing.JFrame {
             .addGroup(panelServiciosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jcCuentasBancarias, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelServiciosLayout.createSequentialGroup()
+                        .addComponent(jcCuentasBancarias, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelServiciosLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addGroup(panelServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelServiciosLayout.createSequentialGroup()
@@ -660,10 +662,12 @@ public class Sistema extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(panelServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelServiciosLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcCuentasBancarias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnRefrescar)
+                        .addGroup(panelServiciosLayout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jcCuentasBancarias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(panelServiciosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(botonRetiros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1415,7 +1419,7 @@ public class Sistema extends javax.swing.JFrame {
         for (Transaccion transaccion : wallet.getTransacccion()) {
 //            System.err.println(transaccion.toString());
             for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
-                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen())||cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen()) || cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
                     Object[] fila = {
                         transaccion.getTipoTransaccion(),
                         transaccion.getIdTransaccion(),
@@ -1451,7 +1455,25 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTipoCuentaActionPerformed
 
     private void btnRetirosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRetirosMouseClicked
+        Wallet wallet = Wallet.obtenerInstancia();
+        int idTransferencia = 0;
+        txtTipoTransaccion.setText("RETIRO");
 
+        if (wallet.listaTransacciones == null) {
+
+            txtNumeroTransaccion.setText(String.valueOf(idTransferencia + 1));
+        } else {
+            txtNumeroTransaccion.setText(String.valueOf(wallet.listaTransacciones.size() + 1));
+        }
+
+        LocalDateTime fecha = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaFormateada = fecha.format(formato);
+        txtFecha.setText(fechaFormateada.toString());
+        JOptionPane.showMessageDialog(null, "Asegurese de seleccionar la cuenta con la que desea enviar su dinero\n [HAGALO EN EL BOTÓN [RF] JUNTO A CUENTAS DISPONIBLES!]");
+        txtCuentaOrigen.setText(jcCuentasBancarias.getSelectedItem().toString());
+        txtCuentaDestino.setEnabled(false);
+        tabbedSystem.setSelectedIndex(4);
     }//GEN-LAST:event_btnRetirosMouseClicked
 
     private void btnRetirosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRetirosMouseEntered
@@ -1463,7 +1485,25 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRetirosMouseExited
 
     private void jbDepositosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDepositosMouseClicked
-        // TODO add your handling code here:
+        Wallet wallet = Wallet.obtenerInstancia();
+        int idTransferencia = 0;
+        txtTipoTransaccion.setText("DEPOSITO");
+
+        if (wallet.listaTransacciones == null) {
+
+            txtNumeroTransaccion.setText(String.valueOf(idTransferencia + 1));
+        } else {
+            txtNumeroTransaccion.setText(String.valueOf(wallet.listaTransacciones.size() + 1));
+        }
+
+        LocalDateTime fecha = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaFormateada = fecha.format(formato);
+        txtFecha.setText(fechaFormateada.toString());
+        JOptionPane.showMessageDialog(null, "Asegurese de seleccionar la cuenta con la que desea enviar su dinero\n [HAGALO EN EL BOTÓN [RF] JUNTO A CUENTAS DISPONIBLES!]");
+        txtCuentaOrigen.setText(jcCuentasBancarias.getSelectedItem().toString());
+        txtCuentaDestino.setEnabled(true);
+        tabbedSystem.setSelectedIndex(4);
     }//GEN-LAST:event_jbDepositosMouseClicked
 
     private void jbDepositosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbDepositosMouseEntered
@@ -1490,8 +1530,9 @@ public class Sistema extends javax.swing.JFrame {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String fechaFormateada = fecha.format(formato);
         txtFecha.setText(fechaFormateada.toString());
-        JOptionPane.showMessageDialog(null, "Asegurese de seleccionar la cuenta con la que desea enviar su dinero\n [HAGALO EN EL RECUADRO DE CUENTAS DISPONIBLES!]");
+        JOptionPane.showMessageDialog(null, "Asegurese de seleccionar la cuenta con la que desea enviar su dinero\n [HAGALO EN EL BOTÓN [RF] JUNTO A CUENTAS DISPONIBLES!]");
         txtCuentaOrigen.setText(jcCuentasBancarias.getSelectedItem().toString());
+        txtCuentaDestino.setEnabled(true);
 
         tabbedSystem.setSelectedIndex(4);
 
@@ -1534,55 +1575,91 @@ public class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
     private void finalizarEnvioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finalizarEnvioMouseClicked
-        if (Double.parseDouble(txtCantidad.getText()) < usuarioPrueba.getSaldoTotal()) {
-            Wallet wallet = Wallet.obtenerInstancia();
-            boolean ban = false;
-            for (Usuario usuario : wallet.getUsuarios()) {
-                for (Cuenta cuenta : usuario.getCuentasBancarias()) {
-                    if (cuenta.getNumeroCuenta().equals(txtCuentaDestino.getText().trim())) {
-                        ban = true;
-                        break;
+        try {
+            if (txtTipoTransaccion.getText().equals("TRANSFERENCIA") || txtTipoTransaccion.getText().equals("DEPOSITO")) {
+                if (Double.parseDouble(txtCantidad.getText()) < usuarioPrueba.getSaldoTotal()) {
+                    Wallet wallet = Wallet.obtenerInstancia();
+                    boolean ban = false;
+
+                    for (Usuario usuario : wallet.getUsuarios()) {
+                        for (Cuenta cuenta : usuario.getCuentasBancarias()) {
+                            if (cuenta.getNumeroCuenta().equals(txtCuentaDestino.getText().trim())) {
+                                ban = true;
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-            if (ban) {
-                SystemController control = SystemController.obtenerInstancia();
+                    if (!ban) {
+                        throw new CuentaNoExistenteException("La cuenta de destino " + txtCuentaDestino.getText() + " no existe.");
+                    }
+                    SystemController control = SystemController.obtenerInstancia();
 
-                double idTransaccion = Double.parseDouble(txtNumeroTransaccion.getText());
-                DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-                LocalDateTime fecha = LocalDateTime.parse(txtFecha.getText(), formato);
-                double monto = Double.parseDouble(txtCantidad.getText());
+                    double idTransaccion = Double.parseDouble(txtNumeroTransaccion.getText());
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                    LocalDateTime fecha = LocalDateTime.parse(txtFecha.getText(), formato);
+                    double monto = Double.parseDouble(txtCantidad.getText());
 
-                String cuentaOrigen = txtCuentaOrigen.getText();
-                String cuentaDestino = txtCuentaDestino.getText();
-                String descripcion = txtDescripcion.getText();
+                    String cuentaOrigen = txtCuentaOrigen.getText();
+                    String cuentaDestino = txtCuentaDestino.getText();
+                    String descripcion = txtDescripcion.getText();
 
-                Transaccion transaccion = new Transaccion();
+                    Transaccion transaccion = new Transaccion();
 
-                TipoTransaccion tipo = transaccion.obtenerTipoTransaccion(txtTipoTransaccion.getText());
-                transaccion.setCuentaDestino(cuentaDestino);
-                transaccion.setCuentaOrigen(cuentaOrigen);
-                transaccion.setDescripcion(descripcion);
-                transaccion.setFecha(fecha.toString());
-                transaccion.setIdTransaccion(idTransaccion);
-                transaccion.setMonto(monto);
-                transaccion.setTipoTransaccion(tipo);
-                transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
-//                try {
+                    TipoTransaccion tipo = transaccion.obtenerTipoTransaccion(txtTipoTransaccion.getText());
+                    transaccion.setCuentaDestino(cuentaDestino);
+                    transaccion.setCuentaOrigen(cuentaOrigen);
+                    transaccion.setDescripcion(descripcion);
+                    transaccion.setFecha(fecha.toString());
+                    transaccion.setIdTransaccion(idTransaccion);
+                    transaccion.setMonto(monto);
+                    transaccion.setTipoTransaccion(tipo);
+                    transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
+
                     WebSocketController wsc = new WebSocketController();
                     wsc.conectarServiciosWebSocket(transaccion);
-//                    control.guardarTransaccion(transaccion);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                JOptionPane.showMessageDialog(null, "Transacción exitosa!\ninicie sesión nuevamente!\n" + transaccion.toString());
-                System.exit(0);
-            } else {
-                JOptionPane.showMessageDialog(null, "La cuenta de destino no existe");
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Saldo insuficiente");
+                }
             }
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Saldo insuficiente");
+            if (txtTipoTransaccion.getText().equals("RETIRO")) {
+                if (Double.parseDouble(txtCantidad.getText()) < usuarioPrueba.getSaldoTotal()) {
+                    Wallet wallet = Wallet.obtenerInstancia();
+
+                    SystemController control = SystemController.obtenerInstancia();
+
+                    double idTransaccion = Double.parseDouble(txtNumeroTransaccion.getText());
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                    LocalDateTime fecha = LocalDateTime.parse(txtFecha.getText(), formato);
+                    double monto = Double.parseDouble(txtCantidad.getText());
+
+                    String cuentaOrigen = txtCuentaOrigen.getText();
+                    String cuentaDestino = "N/A";
+                    String descripcion = txtDescripcion.getText();
+
+                    Transaccion transaccion = new Transaccion();
+
+                    TipoTransaccion tipo = transaccion.obtenerTipoTransaccion(txtTipoTransaccion.getText());
+                    transaccion.setCuentaDestino(cuentaDestino);
+                    transaccion.setCuentaOrigen(cuentaOrigen);
+                    transaccion.setDescripcion(descripcion);
+                    transaccion.setFecha(fecha.toString());
+                    transaccion.setIdTransaccion(idTransaccion);
+                    transaccion.setMonto(monto);
+                    transaccion.setTipoTransaccion(tipo);
+                    transaccion.setIdentificador(String.valueOf(usuarioPrueba.getIdUsuario()));
+
+                    WebSocketController wsc = new WebSocketController();
+                    wsc.conectarServiciosWebSocket(transaccion);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Saldo insuficiente");
+                }
+            }
+
+        } catch (CuentaNoExistenteException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
 
@@ -1658,21 +1735,28 @@ public class Sistema extends javax.swing.JFrame {
                             break;
                         }
                     }
-                    if (index != -1) {
-                        LinkedList<Cuenta> cc = usuarioPrueba.getCuentasBancarias();
-                        cc.remove(index);
-                        usuarioPrueba.setCuentasBancarias(cc);
-                        double saldoT = usuarioPrueba.calcularSaldoT(cc);
-                        usuarioPrueba.setSaldoTotal(saldoT);
-                        try {
+
+                    try {
+                        if (index != -1) {
+
+                            LinkedList<Cuenta> cc = usuarioPrueba.getCuentasBancarias();
+                            cc.remove(index);
+                            usuarioPrueba.setCuentasBancarias(cc);
+                            double saldoT = usuarioPrueba.calcularSaldoT(cc);
+                            usuarioPrueba.setSaldoTotal(saldoT);
+
                             wallet.editarUsuario(usuarioPrueba.getIdUsuario(), usuarioPrueba);
                             JOptionPane.showMessageDialog(null, "Cuenta desenlazada correctamente!");
                             System.exit(0);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                        } else {
+
+                            throw new CuentaNoExistenteException("La cuenta con el número " + numC + " no se encontró.");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Cuenta no encontrada");
+                    } catch (CuentaNoExistenteException e) {
+                        // Capturamos la excepción y mostramos el mensaje
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    } catch (IOException ex) {
+                        Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
             }
@@ -1690,6 +1774,15 @@ public class Sistema extends javax.swing.JFrame {
     private void administrarCuentasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_administrarCuentasMouseExited
         btnAdministrarCuentas.setBackground(new Color(70, 130, 180));
     }//GEN-LAST:event_administrarCuentasMouseExited
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        SystemController control = SystemController.obtenerInstancia();
+        try {
+            control.usarBotonServicios(usuarioPrueba, String.valueOf(jcCuentasBancarias.getSelectedItem()));
+
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1741,6 +1834,7 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel botonRetiros;
     private javax.swing.JPanel botonServicios;
     private javax.swing.JPanel btnAdministrarCuentas;
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JLabel btnRetiros;
     private javax.swing.JLabel finalizarEnvio;
     public static javax.swing.JTable historial;
@@ -1805,7 +1899,6 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel panelSystem;
     private javax.swing.JPanel panelUsuario;
     public static javax.swing.JTabbedPane tabbedSystem;
-    private javax.swing.JTextField tipoCuentaEnUso;
     public static javax.swing.JTextField txtBanco;
     private javax.swing.JTextField txtCantidad;
     public static javax.swing.JTextField txtCorreo;

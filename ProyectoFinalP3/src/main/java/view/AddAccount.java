@@ -4,6 +4,7 @@
  */
 package view;
 
+import Exception.CuentaDuplicadaException;
 import app.Wallet;
 import controller.SignController;
 import controller.SystemController;
@@ -216,8 +217,21 @@ public class AddAccount extends javax.swing.JFrame {
         String numeroCuenta = txtNumeroDeCuenta11.getText();
         String tipoCuenta = String.valueOf(jcTipoCuenta11.getSelectedItem());
 
-        TipoCuenta tipo = TipoCuenta.AHORRO;
+// Verificar si el número de cuenta ya existe
+        for (Usuario user : wallet.getUsuarios()) {
+            for (Cuenta ac : user.getCuentasBancarias()) {
+                if (ac.getNumeroCuenta().equals(numeroCuenta)) {
+                    try {
+                        throw new CuentaDuplicadaException("El número de cuenta " + numeroCuenta + " ya está registrado.");
+                    } catch (CuentaDuplicadaException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                        return; // Salir del método si se detecta el error
+                    }
+                }
+            }
+        }
 
+        TipoCuenta tipo = TipoCuenta.AHORRO;
         if (tipoCuenta.equals("AHORRO")) {
             tipo = TipoCuenta.AHORRO;
         } else if (tipoCuenta.equals("CORRIENTE")) {
@@ -230,12 +244,9 @@ public class AddAccount extends javax.swing.JFrame {
         int min = 1000000;
         int max = 10000000;
         Random random = new Random();
-        // Generamos un número aleatorio entre min y max (incluidos)
         saldo = random.nextDouble((max - min) + 1) + min;
 
         Banco bancoN = Banco.BANCO_ITAU;
-
-        int idCuenta = cuentasBancarias.size() + 1;
 
         if (banco.equals("BANCO_NACIONAL")) {
             bancoN = Banco.BANCO_NACIONAL;
@@ -249,20 +260,20 @@ public class AddAccount extends javax.swing.JFrame {
             bancoN = Banco.BANCO_ITAU;
         }
 
-        //aqui se finaliza creando la cuenta bancaria y agregandola a la lista de cuentas del usuario
-        Cuenta cuenta = new Cuenta(idCuenta, bancoN, numeroCuenta, tipo, saldo);
+        Cuenta cuenta = new Cuenta(usuario.getCuentasBancarias().size() + 1, bancoN, numeroCuenta, tipo, saldo);
         cuentasBancarias.add(cuenta);
+
         double saldoTotal = sistema.usuarioPrueba.calcularSaldoT(cuentasBancarias);
         usuario.setSaldoTotal(saldoTotal);
+
         try {
             wallet.editarUsuario(usuario.getIdUsuario(), usuario);
             JOptionPane.showMessageDialog(null, "Cuenta agregada exitosamente" + "\npor favor inicia sesión nuevamente!");
 
-            // Cerrar todas las ventanas abiertas
+
             for (Frame frame : Frame.getFrames()) {
                 frame.dispose();
             }
-            // Invocar el método main nuevamente para "reiniciar"
             String[] args = {};
             Wallet.main(args);
 

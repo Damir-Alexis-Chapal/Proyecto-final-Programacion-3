@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import model.Usuario;
 import utils.ArchivoUtil;
 import utils.Persistencia;
+import Exception.*;
 
 /**
  *
@@ -275,26 +276,36 @@ public class Login extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (control.validarUsuario(txtUsuario.getText(), txtCorreo.getText())) {
-            Sistema sistema = Sistema.obtenerInstancia();
 
-            Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
-            System.err.println(usuario.mostrarInformacionUsuario());
-            controlDos.setearDatosUsuario(usuario);
-            ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder" + " Usuario: " + txtUsuario.getText() + " " + txtCorreo.getText(), 1, "ingresar/correcto");
-            JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
-            sistema.setVisible(true);
-            try {
-                WebSocketController wsc = new WebSocketController();
-                wsc.iniciarServidor();
-            } catch (Exception e) {
+        try {
+            if (control.validarUsuario(txtUsuario.getText(), txtCorreo.getText())) {
+                Sistema sistema = Sistema.obtenerInstancia();
 
+                Usuario usuario = control.obtenerUsuario(txtUsuario.getText(), txtCorreo.getText());
+
+                System.err.println(usuario.mostrarInformacionUsuario());
+                controlDos.setearDatosUsuario(usuario);
+                
+                ArchivoUtil.guardarRegistroLog("datos correctos al intentar acceder" + " Usuario: " + txtUsuario.getText() + " " + txtCorreo.getText(), 1, "ingresar/correcto");
+                JOptionPane.showMessageDialog(null, "INICIO DE SESIÓN CORRECTO");
+                
+                sistema.setVisible(true);
+
+                try {
+                    WebSocketController wsc = new WebSocketController();
+                    wsc.iniciarServidor();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                throw new UsuarioNoEncontradoException("Datos incorrectos, no se pudo validar el usuario.");
             }
-
-        } else {
+        } catch (UsuarioNoEncontradoException e) {
             ArchivoUtil.guardarRegistroLog("datos incorrectos al intentar acceder", 2, "ingresar/incorrecto");
-            JOptionPane.showMessageDialog(null, "DATOS INCORRECTOS");
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
 
     }//GEN-LAST:event_jbIngresarMouseClicked
 

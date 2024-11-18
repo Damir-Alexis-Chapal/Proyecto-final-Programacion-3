@@ -4,6 +4,8 @@
  */
 package view;
 
+import Exception.CorreoDuplicadoException;
+import Exception.CuentaDuplicadaException;
 import app.Wallet;
 import controller.SignController;
 import java.awt.Color;
@@ -12,11 +14,11 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Banco;
 import model.Cuenta;
 import model.TipoCuenta;
 import model.Usuario;
-
 
 /**
  *
@@ -348,67 +350,82 @@ public class Sign extends javax.swing.JFrame {
 
         Wallet wallet = Wallet.obtenerInstancia();
         LinkedList<Cuenta> cuentasBancarias = new LinkedList<>();
-        String nombre = txtNombre.getText();
-        String correo = txtCorreo.getText();
-        String telefono = txtTelefono.getText();
-        String direccion = txtDireccion.getText();
-        String banco = String.valueOf(jcBanco.getSelectedItem());
-        String numeroCuenta = txtNumeroDeCuenta.getText();
-        String tipoCuenta = String.valueOf(jcTipoCuenta.getSelectedItem());
-        int usuarioId = wallet.listaUsuarios.size() + 1;
-        SignController controlador = SignController.obtenerInstancia();
-
-        
-        TipoCuenta tipo = TipoCuenta.AHORRO;
-        
-        if (tipoCuenta.equals("AHORRO")) {
-            tipo = TipoCuenta.AHORRO;
-        } else if (tipoCuenta.equals("CORRIENTE")) {
-            tipo = TipoCuenta.CORRIENTE;
-        } else if (tipoCuenta.equals("INVERSION")) {
-            tipo = TipoCuenta.INVERSION;
-        }
-        
-        double saldo=0;
-        int min= 1000000;
-        int max= 10000000;
-        Random random = new Random();
-        // Generamos un número aleatorio entre min y max (incluidos)
-        saldo = random.nextDouble((max - min) + 1) + min;
-        
-        Banco bancoN = Banco.BANCO_ITAU;
-
-        int idCuenta = cuentasBancarias.size() + 1;
-
-        if (banco.equals("BANCO_NACIONAL")) {
-            bancoN = Banco.BANCO_NACIONAL;
-        } else if (banco.equals("BANCO_POPULAR")) {
-            bancoN = Banco.BANCO_POPULAR;
-        } else if (banco.equals("BANCO_SANTANDER")) {
-            bancoN = Banco.BANCO_SANTANDER;
-        } else if (banco.equals("BBVA")) {
-            bancoN = Banco.BBVA;
-        } else if (banco.equals("BANCO_ITAU")) {
-            bancoN = Banco.BANCO_ITAU;
-        }
-        
-        //aqui se finaliza creando la cuenta bancaria y agregandola a la lista de cuentas del usuario
-        Cuenta cuenta = new Cuenta(idCuenta, bancoN, numeroCuenta, tipo, saldo);
-        cuentasBancarias.add(cuenta);
-        
-        //aqui se crea el nuevo usuario, y se setea la lista de cuentas por aparte
-        Usuario nuevoUsuario = new Usuario(usuarioId, nombre, 
-                correo, telefono, direccion, saldo);
-        
-        nuevoUsuario.setCuentasBancarias(cuentasBancarias);
 
         try {
+
+            for (Usuario user : wallet.getUsuarios()) {
+                for (Cuenta ac : user.getCuentasBancarias()) {
+                    if (ac.getNumeroCuenta().equals(txtNumeroDeCuenta.getText())) {
+                        throw new CuentaDuplicadaException("El número de cuenta " + txtNumeroDeCuenta.getText() + " ya existe.");
+                    }
+                }
+
+                if (user.getCorreoElectronico().equals(txtCorreo.getText())) {
+                    throw new CorreoDuplicadoException("El correo " + txtCorreo.getText() + " ya está registrado.");
+                }
+            }
+
+            String nombre = txtNombre.getText();
+            String correo = txtCorreo.getText();
+            String telefono = txtTelefono.getText();
+            String direccion = txtDireccion.getText();
+            String banco = String.valueOf(jcBanco.getSelectedItem());
+            String numeroCuenta = txtNumeroDeCuenta.getText();
+            String tipoCuenta = String.valueOf(jcTipoCuenta.getSelectedItem());
+            int usuarioId = wallet.listaUsuarios.size() + 1;
+            SignController controlador = SignController.obtenerInstancia();
+
+            TipoCuenta tipo = TipoCuenta.AHORRO;
+
+            if (tipoCuenta.equals("AHORRO")) {
+                tipo = TipoCuenta.AHORRO;
+            } else if (tipoCuenta.equals("CORRIENTE")) {
+                tipo = TipoCuenta.CORRIENTE;
+            } else if (tipoCuenta.equals("INVERSION")) {
+                tipo = TipoCuenta.INVERSION;
+            }
+
+            double saldo = 0;
+            int min = 1000000;
+            int max = 10000000;
+            Random random = new Random();
+            saldo = random.nextDouble((max - min) + 1) + min;
+
+            Banco bancoN = Banco.BANCO_ITAU;
+
+            if (banco.equals("BANCO_NACIONAL")) {
+                bancoN = Banco.BANCO_NACIONAL;
+            } else if (banco.equals("BANCO_POPULAR")) {
+                bancoN = Banco.BANCO_POPULAR;
+            } else if (banco.equals("BANCO_SANTANDER")) {
+                bancoN = Banco.BANCO_SANTANDER;
+            } else if (banco.equals("BBVA")) {
+                bancoN = Banco.BBVA;
+            } else if (banco.equals("BANCO_ITAU")) {
+                bancoN = Banco.BANCO_ITAU;
+            }
+
+            // Crear la cuenta bancaria y agregarla a la lista de cuentas
+            Cuenta cuenta = new Cuenta(usuarioId, bancoN, numeroCuenta, tipo, saldo);
+
+            cuentasBancarias.add(cuenta);
+
+            // Crear el nuevo usuario y asignar la lista de cuentas
+            Usuario nuevoUsuario = new Usuario(usuarioId, nombre, correo, telefono, direccion, saldo);
+            nuevoUsuario.setCuentasBancarias(cuentasBancarias);
+
+            // Agregar el nuevo usuario al controlador
             controlador.agregarUsuario(nuevoUsuario);
+            JOptionPane.showMessageDialog(null, "Usuario registrado exitosamente!");
             this.dispose();
+        } catch (CorreoDuplicadoException | CuentaDuplicadaException e) {
+            // Manejar las excepciones de correo duplicado y cuenta duplicada
+            JOptionPane.showMessageDialog(null, e.getMessage());
         } catch (IOException ex) {
+            // Manejar cualquier otra excepción
             Logger.getLogger(Sign.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
+
     }//GEN-LAST:event_jbFinalizarMouseClicked
 
     private void jbFinalizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbFinalizarMouseEntered
@@ -433,16 +450,24 @@ public class Sign extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Sign.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sign.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Sign.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sign.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Sign.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sign.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Sign.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sign.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
