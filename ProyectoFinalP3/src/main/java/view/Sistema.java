@@ -112,6 +112,10 @@ public class Sistema extends javax.swing.JFrame {
         panelMovimientos = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         historial = new javax.swing.JTable();
+        btnTransferencia = new javax.swing.JButton();
+        btnRetir = new javax.swing.JButton();
+        btnDepo = new javax.swing.JButton();
+        btnAllTransaccion = new javax.swing.JButton();
         panelUsuario = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -695,17 +699,61 @@ public class Sistema extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(historial);
 
+        btnTransferencia.setText("TRANSFERENCIAS");
+        btnTransferencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransferenciaActionPerformed(evt);
+            }
+        });
+
+        btnRetir.setText("RETIROS");
+        btnRetir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRetirActionPerformed(evt);
+            }
+        });
+
+        btnDepo.setText("DEPOSITOS");
+        btnDepo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDepoActionPerformed(evt);
+            }
+        });
+
+        btnAllTransaccion.setText("VER TODAS");
+        btnAllTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAllTransaccionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMovimientosLayout = new javax.swing.GroupLayout(panelMovimientos);
         panelMovimientos.setLayout(panelMovimientosLayout);
         panelMovimientosLayout.setHorizontalGroup(
             panelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 795, Short.MAX_VALUE)
+            .addGroup(panelMovimientosLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(btnTransferencia)
+                .addGap(53, 53, 53)
+                .addComponent(btnRetir, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80)
+                .addComponent(btnDepo, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(btnAllTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMovimientosLayout.setVerticalGroup(
             panelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMovimientosLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 21, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(panelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTransferencia)
+                    .addComponent(btnRetir)
+                    .addComponent(btnDepo)
+                    .addComponent(btnAllTransaccion))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         tabbedSystem.addTab("tab3", panelMovimientos);
@@ -1784,6 +1832,129 @@ public class Sistema extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnRefrescarActionPerformed
 
+    private void btnTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciaActionPerformed
+        String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
+        DefaultTableModel mt = new DefaultTableModel(columnas, 0);
+
+        if (wallet.getTransacccion().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
+        }
+        for (Transaccion transaccion : wallet.getTransacccion()) {
+
+            for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen()) || cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                    if (transaccion.getTipoTransaccion().name().equals("TRANSFERENCIA")) {
+                        Object[] fila = {
+                            transaccion.getTipoTransaccion(),
+                            transaccion.getIdTransaccion(),
+                            transaccion.getFecha(),
+                            transaccion.getMonto(),
+                            transaccion.getCuentaOrigen(),
+                            transaccion.getCuentaDestino(),
+                            transaccion.getDescripcion()
+                        };
+                        mt.addRow(fila);
+                    }
+
+                }
+            }
+
+        }
+        historial.setModel(mt);
+    }//GEN-LAST:event_btnTransferenciaActionPerformed
+
+    private void btnRetirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetirActionPerformed
+        String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
+        DefaultTableModel mt = new DefaultTableModel(columnas, 0);
+
+        if (wallet.getTransacccion().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
+        }
+        for (Transaccion transaccion : wallet.getTransacccion()) {
+
+            for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen()) || cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                    if (transaccion.getTipoTransaccion().name().equals("RETIRO")) {
+                        Object[] fila = {
+                            transaccion.getTipoTransaccion(),
+                            transaccion.getIdTransaccion(),
+                            transaccion.getFecha(),
+                            transaccion.getMonto(),
+                            transaccion.getCuentaOrigen(),
+                            transaccion.getCuentaDestino(),
+                            transaccion.getDescripcion()
+                        };
+                        mt.addRow(fila);
+                    }
+
+                }
+            }
+
+        }
+        historial.setModel(mt);
+    }//GEN-LAST:event_btnRetirActionPerformed
+
+    private void btnDepoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepoActionPerformed
+        String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
+        DefaultTableModel mt = new DefaultTableModel(columnas, 0);
+
+        if (wallet.getTransacccion().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
+        }
+        for (Transaccion transaccion : wallet.getTransacccion()) {
+
+            for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen()) || cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+                    if (transaccion.getTipoTransaccion().name().equals("DEPOSITO")) {
+                        Object[] fila = {
+                            transaccion.getTipoTransaccion(),
+                            transaccion.getIdTransaccion(),
+                            transaccion.getFecha(),
+                            transaccion.getMonto(),
+                            transaccion.getCuentaOrigen(),
+                            transaccion.getCuentaDestino(),
+                            transaccion.getDescripcion()
+                        };
+                        mt.addRow(fila);
+                    }
+
+                }
+            }
+
+        }
+        historial.setModel(mt);
+    }//GEN-LAST:event_btnDepoActionPerformed
+
+    private void btnAllTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllTransaccionActionPerformed
+        String[] columnas = {"Tipo Transacción", "ID", "Fecha/Hora", "Monto", "Cuenta Origen", "Cuenta Destino", "Descripción"};
+        DefaultTableModel mt = new DefaultTableModel(columnas, 0);
+
+        if (wallet.getTransacccion().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Aún no has hecho ninguna transacción");
+        }
+        for (Transaccion transaccion : wallet.getTransacccion()) {
+
+            for (Cuenta cuenta : usuarioPrueba.getCuentasBancarias()) {
+                if (cuenta.getNumeroCuenta().equals(transaccion.getCuentaOrigen()) || cuenta.getNumeroCuenta().equals(transaccion.getCuentaDestino())) {
+
+                    Object[] fila = {
+                        transaccion.getTipoTransaccion(),
+                        transaccion.getIdTransaccion(),
+                        transaccion.getFecha(),
+                        transaccion.getMonto(),
+                        transaccion.getCuentaOrigen(),
+                        transaccion.getCuentaDestino(),
+                        transaccion.getDescripcion()
+                    };
+                    mt.addRow(fila);
+
+                }
+            }
+
+        }
+        historial.setModel(mt);
+    }//GEN-LAST:event_btnAllTransaccionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1834,8 +2005,12 @@ public class Sistema extends javax.swing.JFrame {
     private javax.swing.JPanel botonRetiros;
     private javax.swing.JPanel botonServicios;
     private javax.swing.JPanel btnAdministrarCuentas;
+    private javax.swing.JButton btnAllTransaccion;
+    private javax.swing.JButton btnDepo;
     private javax.swing.JButton btnRefrescar;
+    private javax.swing.JButton btnRetir;
     private javax.swing.JLabel btnRetiros;
+    private javax.swing.JButton btnTransferencia;
     private javax.swing.JLabel finalizarEnvio;
     public static javax.swing.JTable historial;
     private javax.swing.JLabel jButtonHome;
